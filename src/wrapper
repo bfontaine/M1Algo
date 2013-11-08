@@ -1,0 +1,35 @@
+#! /usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
+import algos
+from sys import exit
+from helpers import read_args, debug, print_usage, print_algos
+
+def main():
+    als = algos.get_algos()
+
+    width, algo, flags = read_args()
+
+    if 'help' in flags:
+        print_usage()
+        print("\nAvailable algorithms:")
+
+    if 'help' in flags or 'list' in flags:
+        print_algos(als)
+        exit(0)
+
+    if algo and algo not in als:
+        print("Unknown algorithm: '%s'" % algo)
+        algo = None
+
+    if not algo:
+        print_usage()
+    else:
+        fn, _ = als[algo]
+        res = fn(input(), width)
+        for line in res:
+            print(line)
+
+
+if __name__ == '__main__':
+    main()
