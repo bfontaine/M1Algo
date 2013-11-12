@@ -3,32 +3,28 @@
 
 import algos
 from sys import exit
-from helpers import read_args, debug, print_usage, print_algos
+from helpers import printerr, read_args
 
 def main():
     als = algos.get_algos()
 
-    width, algo, flags = read_args()
+    width, algo, flags = read_args(als)
 
-    if 'help' in flags:
-        print_usage()
-        print("\nAvailable algorithms:")
+    if flags.info:
+        if flags.info not in als:
+            unknown_algo_error(flags.info, als)
 
-    if 'help' in flags or 'list' in flags:
-        print_algos(als)
+        f, sd = als[flags.info]
+        print("%s: %s\n%s" % (flags.info.capitalize(), sd, f.__doc__))
         exit(0)
 
     if algo and algo not in als:
-        print("Unknown algorithm: '%s'" % algo)
-        algo = None
+        unknown_algo_error(algo, als)
 
-    if not algo:
-        print_usage()
-    else:
-        fn, _ = als[algo]
-        res = fn(input(), width)
-        for line in res:
-            print(line)
+    fn, _ = als[algo]
+    res = fn(input(), width)
+    for line in res:
+        print(line)
 
 
 if __name__ == '__main__':

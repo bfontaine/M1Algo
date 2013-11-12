@@ -10,17 +10,16 @@ University.
 You’ll need Python ≥3.1.
 
 ```
-./src/wrapper [-w <width>] --algo=<algo> < input > output
+./src/wrapper [-w <width>] --algo <algo> < input > output
 ```
 
 The program reads one line on stdin and writes on stdout.
 
-- `--algo=<algo>`: specifies the algorithm to use (you *must* provide this
+- `--algo <algo>`: specifies the algorithm to use (you *must* provide this
   information)
 - `-w <width>`: specifies the width of the page (default: 79)
-
-You can also use `--list` to get a list of available algorithms and `--help` to
-see this text with the list.
+- `--info <algo>`: this option can be used to print some info about a specific
+  algorithm
 
 ## Add an algorithm
 
@@ -45,5 +44,8 @@ same file, as long as you don’t use `@algo()` on them.
 ```python
 @algo("return an empty text")
 def empty(txt, width):
+    """
+    This really cool algorithm has a complexity of O(1).
+    """
     return []
 ```
