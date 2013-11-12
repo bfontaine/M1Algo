@@ -3,28 +3,33 @@
 
 import algos
 from sys import exit
-from helpers import printerr, read_args
+import helpers as h
+from helpers import printerr, read_args, unknown_algo_error
 
 def main():
     als = algos.get_algos()
 
-    width, algo, flags = read_args(als)
+    width, algo, flags = h.read_args(als)
 
     if flags.info:
-        if flags.info not in als:
-            unknown_algo_error(flags.info, als)
+        name = flags.info
+        if name not in als:
+            h.unknown_algo_error(name, als)
 
-        f, sd = als[flags.info]
-        print("%s: %s\n%s" % (flags.info.capitalize(), sd, f.__doc__))
+        fun, sd = als[flags.info]
+        h.print_algo_info(name, fun, sd)
         exit(0)
 
     if algo and algo not in als:
-        unknown_algo_error(algo, als)
+        h.unknown_algo_error(algo, als)
 
     fn, _ = als[algo]
     res = fn(input(), width)
     for line in res:
-        print(line)
+        if isinstance(line, str):
+            print(line)
+        else: # lists of words
+            print(" ".join(line))
 
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+import re
 import argparse as ap
 from argparse import RawTextHelpFormatter
 from sys import exit, stdin, stdout, stderr
@@ -10,6 +11,13 @@ def printerr(*args, **kwargs):
     """
     kwargs['file'] = stderr
     print(*args, **kwargs)
+
+def print_algo_info(name, fun, shortdoc):
+    """
+    Print info about an algorithm
+    """
+    name = re.sub('_', ' ', name).title()
+    print("%s: %s\n%s" % (name, shortdoc, fun.__doc__))
 
 def read_args(algs):
     """
@@ -37,8 +45,11 @@ def read_args(algs):
         parser.print_help(file=stderr)
         exit(1)
 
+    if args.info:
+        args.info = re.sub('-', '_', args.info.lower())
+
     if args.algo:
-        args.algo = args.algo.lower()
+        args.algo = re.sub('-', '_', args.algo.lower())
 
     return (args.width, args.algo, args)
 
@@ -53,7 +64,7 @@ def get_algos_str(algs):
     fmt = "%-" + str(max_width) + "s -- %s"
 
     s = "Available algorithms:\n"
-    return s + "\n".join([fmt % tuple(a) for a in ls])
+    return s + "\n".join([fmt % (re.sub('_', '-', a), doc) for a, doc in ls])
 
 def print_algos(algs, file=stdout):
     """
