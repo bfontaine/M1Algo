@@ -82,10 +82,26 @@ def unknown_algo_error(alg, algs):
     printerr("Unknown algorithm '%s'." % alg)
     print_algos(algs, file=stderr)
 
+def chunked_input():
+    """
+    Generate strings from stdin
+    """
+    rest = ''
+    while True:
+        chk = stdin.read(1048576) # 1MB
+        if chk == '':
+            break
+        # we need this to avoid chuncks that stop in the middle of a word
+        s, rest2 = chk.rsplit(' ', 1)
+        yield rest+s
+        rest = rest2
+
+
 def read_words():
     """
     Lazily read words on standard input
     """
     re_word = re.compile(r'\S+')
-    for m in re.finditer(re_word, input()):
-        yield m.group(0)
+    for chunk in chunked_input():
+        for m in re.finditer(re_word, chunk):
+            yield m.group(0)
