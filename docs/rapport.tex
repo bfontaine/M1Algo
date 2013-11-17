@@ -1,7 +1,7 @@
-\documentclass[]{article}
+\documentclass{article}
 \usepackage{babel}
 \usepackage{verbatim}
-
+\usepackage{cprotect}
 \begin{document}
 
 \title{Projet d'Algorithmique}
@@ -16,26 +16,28 @@ Le projet a été écrit avec Python 3 sans utilisation de bibliothèques extern
 \section{Mise en route}
 \subsection{Installation}
 
-Le code est situé dans \texttt{src}, et ne nécessite pas d'installation
+Le code est situé dans \verb|src|, et ne nécessite pas d'installation
 particulière. Assurez-vous cependant d'avoir au moins Python 3.1.
 
 \subsection{Utilisation}
 
-Le programme s'appelle \texttt{wrapper}, il suffit de le lancer avec l'option
-\texttt{--help} pour avoir un aperçu de son utilisation ainsi qu'une liste des
+Le programme s'appelle \verb|wrapper|, il suffit de le lancer avec l'option
+\verb|--help| pour avoir un aperçu de son utilisation ainsi qu'une liste des
 algorithmes disponibles. Il lit son entrée sur l'entrée standard, et écrit le
 résultat sur la sortie standard. Il est possible de choisir l'algorithme à
-utiliser en utilisant l'option \texttt{--algo}, ainsi que de changer la largeur
-de la page (79 par défaut) avec \texttt{-w}.
+utiliser en utilisant l'option \verb|--algo|, ainsi que de changer la largeur
+de la page (79 par défaut) avec \verb|-w|.
+
+Par exemple, pour utiliser l'algorithme « naive-greedy » avec une largeur de
+page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivante
+:
 
 \begin{verbatim}
-# formatter "in.txt" avec l'algorithme "naive-greedy"
-# et une largeur de 76
 ./wrapper --algo naive-greedy -w 76 < in.txt
 \end{verbatim}
 
-Il est également possible d'obtenir plus d'informations sur un algorithm en
-utilisant l'option \texttt{--info}.
+Il est également possible d'obtenir plus d'informations sur un algorithme en
+utilisant l'option \verb|--info|.
 
 \begin{verbatim}
 ./wrapper --info naive-greedy
@@ -43,7 +45,45 @@ utilisant l'option \texttt{--info}.
 
 \section{Fonctionnement}
 
+Un des avantages de Python par rapport aux autres langages proposés pour le
+projet est qu'il a des fonctions de première classe. Nous avons utilisé cette
+fonctionalité ainsi que du chargement dynamique de modules pour avoir un
+environnement permettant de très facilement ajouter ou enlever des algorithmes
+sans avoir à modifier aucune autre partie du code que la fonction qui définit
+l'algorithme.
+
+Lors du lancement du programme, tous les modules Python situés dans
+\verb|src/algos| sont chargés et les implémentations d'algorithmes qu'ils
+contiennent sont enregistrées dans une table de correspondance, qui associe leur
+nom avec la fonction qui correspond et la documentation optionnelle. En fonction
+des options données sur la ligne de commande, le programme utilise ensuite cette
+table pour afficher la liste des algorithmes possibles, afficher la
+documentation de l'un d'eux ou l'exécuter sur du texte donné en entrée.
+
+Chaque algorithme est défini sous forme d'une fonction qui prend en argument une
+chaîne de caractères et une largeur, et retourne une liste de lignes qui
+correspond au texte imprimé sur une page de la largeur donnée. Nous utilisons
+les décorateurs de Python pour déclarer une fonction comme implémentant un
+algorithme, et pas une fonction auxiliaire.
+
+Voici par exemple ce que serait le code déclarant un algorithme qui affiche un
+mot par ligne, peut importe la largeur de la page :
+
+\begin{verbatim}
+@algo("An example algorithm")
+def one_word_per_line(txt, width):
+    """
+    This algorithm is an example,
+    don't use it!
+    """
+    return txt.split(' ')
+\end{verbatim}
+
 \chapter{Algorithmes}
+
+Les algorithmes sont regroupés par familles, telles que vues en cours. La
+complexité théorique dans le pire cas en temps en fonction de la longueur du
+texte en entrée est donnée.
 
 \section{Diviser pour régner}
 
@@ -51,6 +91,17 @@ utilisant l'option \texttt{--info}.
 
 \subsection{Glouton naïf}
 
+Cet algorithme, qui marche en $O(n)$, est probablement le plus basique, celui
+auquel on pense tout de suite lorsque le problème nous est présenté. Il ajoute
+chaque mot sur la même ligne que le précédent, et si la longueur de la ligne
+avec ce mot dépasse la longueur maximale, il l'ajoute sur la ligne suivante et
+continue sur celle-ci.
+
+Il ne fait que maximiser le nombre de mots par ligne, mais ne cherche pas à
+ajouter des espaces entre les mots de façon à justifier le texte.
+
 \section{Programmation dynamique}
+
+\section{Récapitulatif}
 
 \end{document}
