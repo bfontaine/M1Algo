@@ -11,6 +11,11 @@ def main():
 
     width, algo, flags = h.read_args(als)
 
+    if flags.ls:
+        for alg in als.keys():
+            print(alg)
+        exit(0)
+
     if flags.info:
         name = flags.info
         if name not in als:

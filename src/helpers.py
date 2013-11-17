@@ -38,9 +38,11 @@ def read_args(algs):
             default=79, help='Set the output line width', type=int)
     parser.add_argument('--info', metavar='ALGO',
             help='Get some info about an algorithm')
+    parser.add_argument('--ls', action='store_true',
+            help='Get a list of all algorithms')
     args = parser.parse_args()
 
-    if not args.algo and not args.info:
+    if not args.algo and not (args.info or args.ls):
         printerr('You must give an algorithm on the command-line!')
         parser.print_help(file=stderr)
         exit(1)
