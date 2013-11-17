@@ -61,22 +61,24 @@ table pour afficher la liste des algorithmes possibles, afficher la
 documentation de l'un d'eux ou l'exécuter sur du texte donné en entrée.
 
 Chaque algorithme est défini sous forme d'une fonction qui prend en argument une
-chaîne de caractères et une largeur, et retourne une liste de lignes qui
-correspond au texte imprimé sur une page de la largeur donnée. Nous utilisons
-les décorateurs de Python pour déclarer une fonction comme implémentant un
-algorithme, et pas une fonction auxiliaire.
+liste paresseuse de mots (un générateur) et une largeur, et génère une liste
+de lignes qui correspond au texte imprimé sur une page de la largeur donnée.
+Nous utilisons les décorateurs de Python pour déclarer une fonction comme
+implémentant un algorithme, et pas une fonction auxiliaire.
 
 Voici par exemple ce que serait le code déclarant un algorithme qui affiche un
 mot par ligne, peut importe la largeur de la page :
 
 \begin{verbatim}
 @algo("An example algorithm")
-def one_word_per_line(txt, width):
+def one_word_per_line(words, width):
     """
     This algorithm is an example,
-    don't use it!
+    don't use it! It outputs only one word
+    per line.
     """
-    return txt.split(' ')
+    for word in words:
+        yield word
 \end{verbatim}
 
 \chapter{Algorithmes}

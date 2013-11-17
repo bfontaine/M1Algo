@@ -81,3 +81,11 @@ def unknown_algo_error(alg, algs):
     """
     printerr("Unknown algorithm '%s'." % alg)
     print_algos(algs, file=stderr)
+
+def read_words():
+    """
+    Lazily read words on standard input
+    """
+    re_word = re.compile(r'\S+')
+    for m in re.finditer(re_word, input()):
+        yield m.group(0)

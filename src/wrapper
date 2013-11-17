@@ -4,7 +4,7 @@
 import algos
 from sys import exit
 import helpers as h
-from helpers import printerr, read_args, unknown_algo_error
+from helpers import *
 
 def main():
     als = algos.get_algos()
@@ -29,7 +29,7 @@ def main():
         h.unknown_algo_error(algo, als)
 
     fn, _ = als[algo]
-    res = fn(input(), width)
+    res = fn(read_words(), width)
     for line in res:
         if isinstance(line, str):
             print(line)
