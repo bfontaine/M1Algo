@@ -1,0 +1,56 @@
+\documentclass[]{article}
+\usepackage{babel}
+\usepackage{verbatim}
+
+\begin{document}
+
+\title{Projet d'Algorithmique}
+\author{David Galichet et Baptiste Fontaine}
+\date{28 novembre 2013}
+\maketitle
+
+\chapter{Implémentation}
+
+Le projet a été écrit avec Python 3 sans utilisation de bibliothèques externes.
+
+\section{Mise en route}
+\subsection{Installation}
+
+Le code est situé dans \texttt{src}, et ne nécessite pas d'installation
+particulière. Assurez-vous cependant d'avoir au moins Python 3.1.
+
+\subsection{Utilisation}
+
+Le programme s'appelle \texttt{wrapper}, il suffit de le lancer avec l'option
+\texttt{--help} pour avoir un aperçu de son utilisation ainsi qu'une liste des
+algorithmes disponibles. Il lit son entrée sur l'entrée standard, et écrit le
+résultat sur la sortie standard. Il est possible de choisir l'algorithme à
+utiliser en utilisant l'option \texttt{--algo}, ainsi que de changer la largeur
+de la page (79 par défaut) avec \texttt{-w}.
+
+\begin{verbatim}
+# formatter "in.txt" avec l'algorithme "naive-greedy"
+# et une largeur de 76
+./wrapper --algo naive-greedy -w 76 < in.txt
+\end{verbatim}
+
+Il est également possible d'obtenir plus d'informations sur un algorithm en
+utilisant l'option \texttt{--info}.
+
+\begin{verbatim}
+./wrapper --info naive-greedy
+\end{verbatim}
+
+\section{Fonctionnement}
+
+\chapter{Algorithmes}
+
+\section{Diviser pour régner}
+
+\section{Gloutons}
+
+\subsection{Glouton naïf}
+
+\section{Programmation dynamique}
+
+\end{document}
