@@ -12,7 +12,7 @@ def main():
     width, algo, flags = h.read_args(als)
 
     if flags.ls:
-        for alg in als.keys():
+        for alg in sorted(als.keys()):
             print(alg)
         exit(0)
 
@@ -31,10 +31,7 @@ def main():
     fn, _ = als[algo]
     res = fn(read_words(), width)
     for line in res:
-        if isinstance(line, str):
-            print(line)
-        else: # lists of words
-            print(" ".join(line))
+        print(line)
 
 
 if __name__ == '__main__':
