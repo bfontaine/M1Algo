@@ -29,8 +29,7 @@ utiliser en utilisant l'option \verb|--algo|, ainsi que de changer la largeur
 de la page (79 par défaut) avec \verb|-w|.
 
 Par exemple, pour utiliser l'algorithme « naive-greedy » avec une largeur de
-page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivante
-:
+page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivante :
 
 \begin{verbatim}
 ./wrapper --algo naive-greedy -w 76 < in.txt
@@ -83,9 +82,11 @@ def one_word_per_line(words, width):
 
 \chapter{Algorithmes}
 
-Les algorithmes sont regroupés par familles, telles que vues en cours. La
-complexité théorique dans le pire cas en temps en fonction de la longueur du
-texte en entrée est donnée.
+Les algorithmes sont regroupés par familles, telles que vues en cours. Ils sont
+tous, sauf exception, implémentés de façon à fonctionner sur un flux de texte,
+ce qui impliquent qu'ils fonctionnent sur un flux infini de texte sans problème.
+La complexité théorique dans le pire des cas est donnée en fonction de la
+longueur du texte en entrée ($n$) et de la largeur maximale d'une ligne ($k$).
 
 \section{Diviser pour régner}
 
@@ -94,10 +95,10 @@ texte en entrée est donnée.
 \subsection{Glouton naïf}
 
 Cet algorithme, qui marche en $O(n)$, est probablement le plus basique, celui
-auquel on pense tout de suite lorsque le problème nous est présenté. Il ajoute
-chaque mot sur la même ligne que le précédent, et si la longueur de la ligne
-avec ce mot dépasse la longueur maximale, il l'ajoute sur la ligne suivante et
-continue sur celle-ci.
+qui vient tout de suite à l'esprit lorsque le problème nous est présenté. Il
+ajoute chaque mot sur la même ligne que le précédent, et si la longueur de la
+ligne avec ce mot dépasse la longueur maximale, il l'ajoute sur la ligne
+suivante et continue sur celle-ci.
 
 Il ne fait que maximiser le nombre de mots par ligne, mais ne cherche pas à
 ajouter des espaces entre les mots de façon à justifier le texte.
