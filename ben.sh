@@ -22,10 +22,10 @@ function _bench() {
 # lorem70 -- input=lorem.txt width=70
 
 echo "Running $n iterations"
-echo "                  long25    long45    lorem10   lorem70"
-echo "                  -------------------------------------"
+echo "                        long25    long45    lorem10   lorem70"
+echo "                        -------------------------------------"
 for alg in `$prog --ls`; do
-    printf "%-14s: " $alg
+    printf "%-20s: " $alg
     printf "%10s" $(_bench $alg 25 long)
     printf "%10s" $(_bench $alg 45 long)
     printf "%10s" $(_bench $alg 10 lorem)
