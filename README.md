@@ -32,20 +32,20 @@ a new file, add the following lines at the top of it:
 from .base import algo
 ```
 
-Then, any algorithm must be a function with two parameters, the input text and
-the width, and return a list of lines to print. This function must also be
-decorated with `@algo()`, which takes an optional short doc which will show up
-when one used `--list` on the command line. The name of the function must be
-unique accross all `src/algos/*` files. You can define helper functions in the
-same file, as long as you don’t use `@algo()` on them.
+Then, any algorithm must be a function with two parameters, the words list and
+the width, and yields lines to print. This function must also be decorated with
+`@algo()`, which takes an optional short doc which will show up when one used
+`--list` on the command line. The name of the function must be unique accross
+all `src/algos/*` files. You can define helper functions in the same file, as
+long as you don’t use `@algo()` on them.
 
 ### Example
 
 ```python
 @algo("return an empty text")
-def empty(txt, width):
+def empty(words, width):
     """
     This really cool algorithm has a complexity of O(1).
     """
-    return []
+    yield "no text here"
 ```
