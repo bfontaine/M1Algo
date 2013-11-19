@@ -31,7 +31,7 @@ def main():
     fn, _ = als[algo]
     res = fn(read_words(), width)
     for line in res:
-        print(line)
+        print(' '.join(line))
 
 
 if __name__ == '__main__':

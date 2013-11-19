@@ -63,7 +63,10 @@ Chaque algorithme est défini sous forme d'une fonction qui prend en argument un
 liste paresseuse de mots (un générateur) et une largeur, et génère une liste
 de lignes qui correspond au texte imprimé sur une page de la largeur donnée.
 Nous utilisons les décorateurs de Python pour déclarer une fonction comme
-implémentant un algorithme, et pas une fonction auxiliaire.
+implémentant un algorithme, et pas une fonction auxiliaire. Chaque ligne est
+retournée comme une liste de mots. Ajouter le décorateur \verb|@justify|
+duplique la fonction dans la table en ajoutant une version qui justifie le texte
+en sortie.
 
 Voici par exemple ce que serait le code déclarant un algorithme qui affiche un
 mot par ligne, peut importe la largeur de la page :
@@ -88,6 +91,12 @@ ce qui impliquent qu'ils fonctionnent sur un flux infini de texte sans problème
 La complexité théorique dans le pire des cas est donnée en fonction de la
 longueur du texte en entrée ($n$) et de la largeur maximale d'une ligne ($k$).
 
+Sauf mention contraire, ils supportent tous la justification du texte sans
+coupure de mot, en ajoutant \verb|-justify| au nom de l'algorithme lors des
+tests. Cette opération est en $O(n)$. Il serait possible de l'exécuter en $O(1)$
+mais cela apporterait beaucoup de duplication de code.
+% TODO expliquer pourquoi ça dupliquerait du code
+
 \section{Diviser pour régner}
 
 \section{Gloutons}
@@ -96,7 +105,7 @@ longueur du texte en entrée ($n$) et de la largeur maximale d'une ligne ($k$).
 
 Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire, qu'on pourrait
 réduire à $O(1)$ car la ligne courante n'est gardée en mémoire que dans le but
-de « bufferiser » la sortie), est probablement le plus basique, celui qui vient
+de mettre la sortie en tampon), est probablement le plus basique, celui qui vient
 tout de suite à l'esprit lorsque le problème nous est présenté. Il ajoute chaque
 mot sur la même ligne que le précédent, et si la longueur de la ligne avec ce
 mot dépasse la longueur maximale, il l'ajoute sur la ligne suivante et continue
