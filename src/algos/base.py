@@ -64,3 +64,12 @@ def justify(func):
     wrapper.__doc__  = '\n    See \'%s\'.\n' % name
     register(wrapper, 'Same as %s with justifying' % name)
     return func
+
+def linelen(words):
+    """
+    Compute the length of a list of words as if they were put together on a
+    line, with spaces between them.
+    """
+    words = [w for w in words]
+    wcount = len(words)
+    return sum(map(len, words)) + wcount -1
