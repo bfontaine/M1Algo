@@ -59,10 +59,11 @@ def get_algos_str(algs):
     """
     Return a string describing the algorithms dict passed as an argument
     """
+    # [ name, shortdoc ]
     ls = [ [k, v[1]] for k,v in algs.items() ]
     ls.sort(key=lambda x: x[0])
 
-    max_width = max([len(x[0]) for x in ls])
+    max_width = 0 if len(ls) == 0 else max([len(x[0]) for x in ls])
     fmt = "%-" + str(max_width) + "s -- %s"
 
     s = "Available algorithms:\n"
@@ -95,7 +96,6 @@ def chunked_input():
         s, rest2 = chk.rsplit(' ', 1)
         yield rest+s
         rest = rest2
-
 
 def read_words():
     """
