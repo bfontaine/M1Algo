@@ -17,7 +17,8 @@ def print_algo_info(name, fun, shortdoc):
     Print info about an algorithm
     """
     name = re.sub('_', ' ', name).title()
-    print("%s: %s\n%s" % (name, shortdoc, fun.__doc__))
+    doc = '\n' + fun.__doc__ if fun.__doc__ else ''
+    print("%s: %s%s" % (name, shortdoc, doc))
 
 def read_args(algs):
     """
