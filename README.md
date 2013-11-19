@@ -49,3 +49,8 @@ def empty(words, width):
     """
     yield "no text here"
 ```
+
+## Tests
+
+Run `make check`. This tests the wrapper and helpers functions, but not the
+algorithms.
