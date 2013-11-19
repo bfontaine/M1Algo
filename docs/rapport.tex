@@ -105,11 +105,11 @@ mais cela apporterait beaucoup de duplication de code.
 
 Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire, qu'on pourrait
 réduire à $O(1)$ car la ligne courante n'est gardée en mémoire que dans le but
-de mettre la sortie en tampon), est probablement le plus basique, celui qui vient
-tout de suite à l'esprit lorsque le problème nous est présenté. Il ajoute chaque
-mot sur la même ligne que le précédent, et si la longueur de la ligne avec ce
-mot dépasse la longueur maximale, il l'ajoute sur la ligne suivante et continue
-sur celle-ci.
+de mettre la sortie en tampon), est probablement le plus basique, celui qui
+vient tout de suite à l'esprit lorsque le problème nous est présenté. Il ajoute
+chaque mot sur la même ligne que le précédent, et si la longueur de la ligne
+avec ce mot dépasse la longueur maximale, il l'ajoute sur la ligne suivante et
+continue sur celle-ci.
 
 Il ne fait que maximiser le nombre de mots par ligne, mais ne cherche pas à
 ajouter des espaces entre les mots de façon à justifier le texte.
