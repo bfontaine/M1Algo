@@ -9,25 +9,28 @@ def divide(words, width):
 	line = []
 	if (length_words == 1 ):
 		return (line,(words,len(words[0])))
-	length_words = len(words) // 2
-	c1 = divide(words[:length_words],w)
-	c2 = divide(words[length_words:],w)
+	length_words2 = len(words) // 2
+	if ((length_words2 *2) < length_words):
+		words1 = words[:(length_words2+1)]
+		words2 = words[(length_words2+1):]
+	else:
+		words1 = words[:length_words2]
+		words2 = words[length_words2:]
+	(lines1,(line1, l_length1)) = divide(words1,width)
+	(lines2,(line2, l_length2)) = divide(words2,width)
 	# parti f(n)
-	c1 =(lines1, (line1, l_length1))
-	c2 =(lines2, (line2, l_length2))
 	if (lines2 == []):
-		if (l_length1 == 0):
-			return (lines1, (line2, l_length))
-		else if ((l_length1+l_length2+1) < width):
-			return (lines1, ((line1 + line2), l_length1 + l_length2 + 1))
+		if ((l_length1+l_length2+1) < width):
+			line1 = line1 + line2
+			return (lines1, (line1, l_length1 + l_length2 + 1))
 		else :
-			return (lines1 +line1 ,(line2, l_length2))
+			lines1 = lines1 + [line1]
+			return (lines1 ,(line2, l_length2))
 
 	else:
-		if (l_length1 == 0):
-			return (lines1 + lines2 ,(line2, l_length2))
-		else:
-			return (lines1 + line1 + lines2 ,(line2, l_length2))
+		lines1 = lines1 + [line1]
+		lines1 = lines1 + lines2
+		return (lines1,(line2, l_length2))
 
 
 
@@ -41,10 +44,6 @@ def divide_conquer(words, width):
 	"""
 	para = []
 	words=[w for w in words]
-	dico = divide(words, width)
-	dico = (lines, (word , l_lenght))
-	if (l_length > 0):
-		para = lines + word
-	else :
-		para = lines
+	(lines, (word , l_length)) = divide(words, width)
+	para = lines + [word]
 	return para
