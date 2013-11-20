@@ -94,7 +94,8 @@ def chunked_input():
         if chk == '':
             break
         # we need this to avoid chuncks that stop in the middle of a word
-        s, rest2 = chk.rsplit(' ', 1)
+        s, *rest2 = chk.rsplit(' ', 1)
+        rest2 = rest2[0] if rest2 != [] else ''
         yield rest+s
         rest = rest2
 
