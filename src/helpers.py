@@ -92,9 +92,11 @@ def chunked_input():
     while True:
         chk = stdin.read(1048576) # 1MB
         if chk == '':
+            yield rest
             break
         # we need this to avoid chuncks that stop in the middle of a word
-        s, rest2 = chk.rsplit(' ', 1)
+        s, *rest2 = chk.rsplit(' ', 1)
+        rest2 = rest2[0] if rest2 != [] else ''
         yield rest+s
         rest = rest2
 

@@ -10,7 +10,7 @@ function _bench() {
     local inp=$3
 
     local b=$(time (for i in $(seq 1 $n); do
-        $prog --algo $algo -w $width < benchmarks/${3}.txt > /dev/null
+        $prog --algo $algo -w $width < samples/${3}.txt > /dev/null
     done) 2>&1 1>/dev/null)
     echo "$b" | grep real | cut -f2
 }

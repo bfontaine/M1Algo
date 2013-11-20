@@ -1,0 +1,1 @@
+la programmation dynamique est une stratégie algorithmique
