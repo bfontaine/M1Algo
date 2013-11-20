@@ -20,7 +20,7 @@ def divide(words, width):
 	(lines2,(line2, l_length2)) = divide(words2,width)
 	# parti f(n)
 	if (lines2 == []):
-		if ((l_length1+l_length2+1) < width):
+		if ((l_length1+l_length2+1) <= width):
 			line1 = line1 + line2
 			return (lines1, (line1, l_length1 + l_length2 + 1))
 		else :
