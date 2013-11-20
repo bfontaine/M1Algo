@@ -27,19 +27,22 @@ def algo(doc=""):
         return func
     return wrapper
 
-def justify_line(line, width): # TODO test me
+def justify_line(line, width):
     """
     Justify a line. 'line' is the list of words for this line, and 'width' the
     maximum output width.
     """
     wcount = len(line)
-    length = wcount + sum(map(len, line)) - 1
-    if wcount < 2 or length >= width:
+    if wcount < 2:
+        return line
+
+    length = sum(map(len, line)) + wcount - 1
+    if length >= width:
         return line
 
     lastword = line.pop()
-    trailing = width-length-1
-    spaces, onemore = divmod(trailing, wcount)
+    trailing = width-length
+    spaces, onemore = divmod(trailing, wcount-1)
     sp  = ' '*spaces
     sp2 = sp+' '
     line.append(lastword)

@@ -55,6 +55,10 @@ class TestAlgosBase(unittest.TestCase):
     def test_justify_exact_width(self):
         self.assertEqual(b.justify_line(self.l, 7), self.l)
 
+    def test_justify_one_word(self):
+        l = ['foo']
+        self.assertEqual(b.justify_line(l, 20), l)
+
     def test_justify_one_more_space(self):
         l = self.l
         l[0] += ' '
