@@ -7,4 +7,5 @@
 *.bbl
 *.blg
 *.log
+*.toc
 __pycache__

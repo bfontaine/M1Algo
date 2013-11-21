@@ -1,7 +1,8 @@
 # M1Algo project's Makefile
 #
 
-REPORT=docs/rapport
+REPORT=rapport
+REPORT_PATH=docs/$(REPORT)
 
 .DEFAULT: check benchmarks
 .PHONY: check benchmarks
@@ -12,10 +13,18 @@ benchmarks:
 check:
 	python3 tests/test.py
 
-report: $(REPORT).pdf
+report: $(REPORT_PATH).pdf
 
-$(REPORT).pdf: $(REPORT).tex $(REPORT).bib
-	pdflatex $(REPORT)
-	bibtex $(REPORT)
-	pdflatex $(REPORT)
-	pdflatex $(REPORT)
+clean:
+	rm -f *~ */*~
+	for ext in toc aux log bbl blg; do \
+		rm -f *.$$ext docs/*.$$ext; \
+	done
+
+$(REPORT_PATH).pdf: $(REPORT_PATH).tex $(REPORT_PATH).bib
+	cd docs; \
+	pdflatex $(REPORT); \
+	bibtex $(REPORT); \
+	bibtex $(REPORT); \
+	pdflatex $(REPORT); \
+	pdflatex $(REPORT);
