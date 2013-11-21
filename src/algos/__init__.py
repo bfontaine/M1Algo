@@ -2,7 +2,7 @@
 import os
 import importlib
 from glob import glob
-from .base import get_algos
+from .base import get_algos, justify
 
 # Import all files from this directory as modules
 files = glob(os.path.dirname(__file__)+"/*.py")

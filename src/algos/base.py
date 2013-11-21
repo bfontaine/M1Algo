@@ -59,7 +59,7 @@ def dynamic_justifying(lines, width):
     # TODO
     return lines
 
-def justify_simple(lines, width, **kwargs):
+def justify(lines, width, **kwargs):
     """
     A decorator for algorithms functions to yield justified lines. This
     slightly increase the run time but avoid a lot of code duplication. It
@@ -71,7 +71,7 @@ def justify_simple(lines, width, **kwargs):
 
     if mth == 'simple' or mth not in ['simple', 'dynamic']:
         for line in lines:
-            yield simple_line_justification(line, width)
+            yield simple_line_justifying(line, width)
         return
 
     # dynamic
