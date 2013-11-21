@@ -62,11 +62,9 @@ documentation de l'un d'eux ou l'exécuter sur du texte donné en entrée.
 Chaque algorithme est défini sous forme d'une fonction qui prend en argument une
 liste paresseuse de mots (un générateur) et une largeur, et génère une liste
 de lignes qui correspond au texte imprimé sur une page de la largeur donnée.
-Nous utilisons les décorateurs de Python pour déclarer une fonction comme
-implémentant un algorithme, et pas une fonction auxiliaire. Chaque ligne est
-retournée comme une liste de mots. Ajouter le décorateur \verb|@justify|
-duplique la fonction dans la table en ajoutant une version qui justifie le texte
-en sortie.
+Nous utilisons les décorateurs de Python pour différencier les fonctions qui
+implémentent des algorithmes des autres. Chaque ligne est retournée comme une
+liste de mots, de façon à simplifier l'éventuelle justification.
 
 Voici par exemple ce que serait le code déclarant un algorithme qui affiche un
 mot par ligne, peut importe la largeur de la page :
@@ -91,12 +89,6 @@ ce qui impliquent qu'ils fonctionnent sur un flux infini de texte sans problème
 La complexité théorique dans le pire des cas est donnée en fonction de la
 longueur du texte en entrée ($n$) et de la largeur maximale d'une ligne ($k$).
 
-Sauf mention contraire, ils supportent tous la justification du texte sans
-coupure de mot, en ajoutant \verb|-justify| au nom de l'algorithme lors des
-tests. Cette opération est en $O(n)$. Il serait possible de l'exécuter en $O(1)$
-mais cela apporterait beaucoup de duplication de code.
-% TODO expliquer pourquoi ça dupliquerait du code
-
 \section{Diviser pour régner}
 
 \subsection{Diviser pour régner naïf}
@@ -109,7 +101,7 @@ en $O(n)$. % TODO continuer
 
 \section{Gloutons}
 
-\subsection{Glouton naïf}
+\subsection{Glouton simple}
 
 Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire, qu'on pourrait
 réduire à $O(1)$ car la ligne courante n'est gardée en mémoire que dans le but
@@ -122,19 +114,19 @@ continue sur celle-ci.
 Il ne fait que maximiser le nombre de mots par ligne, mais ne cherche pas à
 ajouter des espaces entre les mots de façon à justifier le texte.
 
-Utilisez \verb|naive-greedy| pour tester l’algorithme.
+Utilisez \verb|simple-greedy| pour tester l’algorithme.
 
-\subsection{Glouton naïf avec justification}
-
-Cet algorithme est identique à « Glouton naïf » sauf qu'il exécute une seconde
-passe sur chaque ligne pour ajouter des espaces entre les mots de façon à
-supprimer les espaces en fin de ligne. Il fonctionne donc en $O(2n)$ en temps et
-$O(k)$ en mémoire, et, s'il diminue le nombre total d'espaces en fin de lignes,
-il diminue la lisibilité du texte par rapport à l'algorithme sur lequel il
-s'appuit car il ne coupe pas les mots entre deux lignes, donc certaines lignes
-ont beaucoup d'espaces entre les mots.
-
-Utilisez \verb|naive-greedy-justify| pour tester l’algorithme.
+% \subsection{Glouton naïf avec justification}
+% 
+% Cet algorithme est identique à « Glouton naïf » sauf qu'il exécute une seconde
+% passe sur chaque ligne pour ajouter des espaces entre les mots de façon à
+% supprimer les espaces en fin de ligne. Il fonctionne donc en $O(2n)$ en temps et
+% $O(k)$ en mémoire, et, s'il diminue le nombre total d'espaces en fin de lignes,
+% il diminue la lisibilité du texte par rapport à l'algorithme sur lequel il
+% s'appuit car il ne coupe pas les mots entre deux lignes, donc certaines lignes
+% ont beaucoup d'espaces entre les mots.
+%
+%Utilisez \verb|naive-greedy-justify| pour tester l’algorithme.
 
 \section{Programmation dynamique}
 
