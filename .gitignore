@@ -3,4 +3,8 @@
 *.swo
 *.pyc
 *.pdf
+*.aux
+*.bbl
+*.blg
+*.log
 __pycache__

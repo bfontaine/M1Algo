@@ -1,7 +1,10 @@
-\documentclass{article}
-\usepackage{babel}
+\documentclass[a4paper, 11pt]{article}
+%\documentclass[]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+%\usepackage{cprotect}
 \usepackage{verbatim}
-\usepackage{cprotect}
 \begin{document}
 
 \title{Projet d'Algorithmique}
@@ -9,7 +12,7 @@
 \date{28 novembre 2013}
 \maketitle
 
-\chapter{Implémentation}
+\part{Implémentation}
 
 Le projet a été écrit avec Python 3 sans utilisation de bibliothèques externes.
 
@@ -81,7 +84,7 @@ def one_word_per_line(words, width):
         yield word
 \end{verbatim}
 
-\chapter{Algorithmes}
+\part{Algorithmes}
 
 Les algorithmes sont regroupés par familles, telles que vues en cours. Ils sont
 tous, sauf exception, implémentés de façon à fonctionner sur un flux de texte,
@@ -132,4 +135,6 @@ Utilisez \verb|simple-greedy| pour tester l’algorithme.
 
 \section{Récapitulatif}
 
+\bibliographystyle{plain}
+\bibliography{rapport}
 \end{document}
