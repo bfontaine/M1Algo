@@ -2,7 +2,7 @@
 from .base import algo
 
 @algo("The most basic greedy algorithm")
-def naive_greedy(words, width):
+def simple_greedy(words, width):
     """
     This algorithm is the most basic one. It adds words to a line until it
     reaches the end of it, then continues on the next line.
@@ -25,3 +25,4 @@ def naive_greedy(words, width):
             line = [word]
             w = width-lw-1
 
+    yield line
