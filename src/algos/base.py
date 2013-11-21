@@ -27,7 +27,7 @@ def algo(doc=""):
         return func
     return wrapper
 
-def justify_line(line, width):
+def simple_line_justifying(line, width):
     """
     Justify a line. 'line' is the list of words for this line, and 'width' the
     maximum output width.
@@ -50,23 +50,32 @@ def justify_line(line, width):
             enumerate(line[:-1]))
     return line
 
-def justify(func):
+def dynamic_justifying(lines, width):
+    """
+    Justify a text by using a method inspired from Hana Samet's paper,
+    "Heuristics for the Line Division Problem in Computer Justified Text"
+    (published in 1981).
+    """
+    # TODO
+    return lines
+
+def justify_simple(lines, width, **kwargs):
     """
     A decorator for algorithms functions to yield justified lines. This
     slightly increase the run time but avoid a lot of code duplication. It
     adds O(n) to the overall complexity of the algorithm, but since we can't
     have lower complexities it's not _that_ annoying.
     """
-    def wrapper(txt, width):
-        for line_words in func(txt, width):
-            yield justify_line(line_words, width)
+    kwargs.setdefault('method', 'simple')
+    mth = kwargs['method']
 
-    name = func.__name__
-    wrapper.__name__ = name + '_justify'
-    name = name.replace('_', '-')
-    wrapper.__doc__  = '\n    See \'%s\'.\n' % name
-    register(wrapper, 'Same as %s with justifying' % name)
-    return func
+    if mth == 'simple' or mth not in ['simple', 'dynamic']:
+        for line in lines:
+            yield simple_line_justification(line, width)
+        return
+
+    # dynamic
+    return dynamic_justifying(lines, width)
 
 def linelen(words):
     """

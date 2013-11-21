@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-from .base import algo, justify
+from .base import algo
 
-@justify
 @algo("The most basic greedy algorithm")
 def naive_greedy(words, width):
     """

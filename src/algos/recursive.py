@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from .base import algo,justify
+from .base import algo
 
 def f1(words,width):
 	length_words = len(words)

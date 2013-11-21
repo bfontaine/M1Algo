@@ -30,6 +30,10 @@ def main():
 
     fn, _ = als[algo]
     res = fn(read_words(), width)
+
+    if flags.justify:
+        res = algos.justify(res, width, method=flags.justify)
+
     for line in res:
         print(' '.join(line))
 

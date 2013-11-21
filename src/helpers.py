@@ -31,7 +31,7 @@ def read_args(algs):
     ep  = '----\nOne line of input is read on stdin and the output is '
     ep += 'written on stdout.\n\n' + get_algos_str(algs)
     parser = ap.ArgumentParser(
-            #description='A text wrapper',
+            description='A text wrapper',
             epilog=ep,
             formatter_class=RawTextHelpFormatter)
     parser.add_argument('--algo', help='The algorithm to use')
@@ -41,6 +41,9 @@ def read_args(algs):
             help='Get some info about an algorithm')
     parser.add_argument('--ls', action='store_true',
             help='Get a list of all algorithms')
+    parser.add_argument('--justify', metavar='METHOD',
+            help='justify the output text using the specified' \
+                    + ' method (simple or dynamic)')
     args = parser.parse_args()
 
     if not args.algo and not (args.info or args.ls):

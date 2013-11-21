@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from .base import algo, justify, linelen
+from .base import algo, linelen
 
 def naive_dc_helper(words, width, llen):
     wcount = len(words)
@@ -14,7 +14,6 @@ def naive_dc_helper(words, width, llen):
     return naive_dc_helper(part1, width, len1) \
         + naive_dc_helper(words[middle:], width, llen-len1)
 
-@justify
 @algo("A basic divide & conquer algorithm")
 def naive_dc(words, width):
     """
