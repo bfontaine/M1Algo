@@ -27,10 +27,7 @@ def naive_dc(words, width):
         yield line
 
 
-def divide(words, width):
-	"""
-
-	"""
+def opt_dc(words, width):
 	length_words = len(words)
 	line = []
 	if (length_words == 1 ):
@@ -42,8 +39,8 @@ def divide(words, width):
 	else:
 		words1 = words[:length_words2]
 		words2 = words[length_words2:]
-	(lines1,(line1, l_length1)) = divide(words1,width)
-	(lines2,(line2, l_length2)) = divide(words2,width)
+	(lines1,(line1, l_length1)) = opt_dc(words1,width)
+	(lines2,(line2, l_length2)) = opt_dc(words2,width)
 	# parti f(n)
 	if (lines2 == []):
 		if ((l_length1+l_length2+1) <= width):
@@ -60,16 +57,14 @@ def divide(words, width):
 
 
 
-@algo("")
+@algo("A optimize divide & conquer algorithm")
 def divide_conquer(words, width):
 	"""
-	This algorithm use a methode divide and conquer.
-	At first divide
-	[ [---------] ...   | [-------- ]  ]
-
+	This algorithm recursively splits the list into two, to have only one word.
+	returns (list_line (current_line, length_line))
 	"""
 	para = []
 	words=[w for w in words]
-	(lines, (word , l_length)) = divide(words, width)
+	(lines, (word , l_length)) = opt_dc(words, width)
 	para = lines + [word]
 	return para

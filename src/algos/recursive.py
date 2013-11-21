@@ -14,9 +14,12 @@ def f1(words,width):
 	else:
 		return (line + [current_line], ([w] ,l_w))
 
-@algo("")
+@algo("A basic recursive algorithm")
 def recursive(words, width):
 	"""
+	This recursive algorithm computes the list parameter in line with
+	a list of size n by taking the solution size (n-1).
+	this function returns (list_lines (current_line, current_length))
 	"""
 	words=[w for w in words]
 	length_words = len(words)
