@@ -73,3 +73,23 @@ class TestAlgosBase(unittest.TestCase):
         l1 = ['foo', 'x', 'bar', 'zzzz']
         l2 = [l1[0] + '  ', l1[1] + '  ', l1[2] + ' ', l1[3]]
         self.assertEqual(b.simple_line_justifying(l1, 19), l2)
+
+    # - linelen - #
+
+    def test_linelen_empty(self):
+        self.assertEqual(b.linelen([]), 0)
+
+    def test_linelen_one_word(self):
+        w = 'foo'
+        self.assertEqual(b.linelen([w]), len(w))
+
+    def test_linelen_two_words(self):
+        w1 = 'foo'
+        w2 = 'bar'
+        l  = len(w1 + ' ' + w2)
+        self.assertEqual(b.linelen([w1, w2]), l)
+
+    def test_linelen(self):
+        line = 'foo bar zzzzzzzz qq s s rstuv wx'
+        words = line.split(' ')
+        self.assertEqual(b.linelen(words), len(line))
