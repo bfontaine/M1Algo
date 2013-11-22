@@ -176,9 +176,12 @@ méthodes :
         tout le texte si celui-ci était justifié avec la première méthode, puis
         de parcourir celui-ci pour ajuster les espaces afin de les rapprocher de
         la moyenne. Cet algorithme représente notre interprétation de la méthode
-        de Hanan Samet pour découper les lignes d'un texte \cite{Samet82}, et
-        peut être utilisée sur la ligne de commande via l'option
-        \verb|--justify dynamic|.
+        de Hanan Samet\footnote{Hanan Samet propose plusieurs heuristiques pour
+        déterminer l'uniformité d'un paragraphe, ainsi que des algorithmes pour
+        l'améliorer. Nous ne nous sommes intéressés qu'aux heuristiques et avont
+        implémenté un algorithme en s'inspirant de celles-ci} pour découper les
+        lignes d'un texte \cite{Samet82}, et peut être utilisée sur la ligne de
+        commande via l'option \verb|--justify dynamic|.
 \end{enumerate}
 
 \section{Récapitulatif}
