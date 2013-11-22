@@ -33,11 +33,11 @@ algorithmes disponibles. Il lit son entrée sur l'entrée standard, et écrit le
 résultat sur la sortie standard. Il est possible de choisir l'algorithme à
 utiliser en utilisant l'option \verb|--algo|, ainsi que de changer la largeur
 de la page (79 par défaut) avec \verb|-w|. Le texte en sortie peut être
-justifié avec la l'option \verb|--justify| (voir l'aide pour les valeurs
-possibles).
+justifié avec la l'option \verb|--justify|.
 
-Par exemple, pour utiliser l'algorithme « naive-greedy » avec une largeur de
-page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivante :
+Par exemple, pour utiliser l'algorithme \ref{sec:simple-greedy} avec une largeur
+de page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivante
+:
 
 \begin{verbatim}
 ./wrapper --algo naive-greedy -w 76 < in.txt
@@ -100,10 +100,10 @@ Dans le cas particulier où un mot serait plus long que la largeur de la page, o
 ne renvoit pas d'erreur, mais on laisse le mot tel quel sur une ligne. C'est à
 l'utilisateur de prévoir ce type de cas.
 
-Nous avons ajouté deux méthodes de justification du texte (i.e. insertion
+Nous avons ajouté une méthode de justification du texte (i.e. insertion
 d'espaces entre les mots de façon à ce que chaque ligne prenne la place
-maximale) qui s'appliquent en repassant sur le texte formatté. Ces méthodes
-sont décrites dans la section \ref{sec:justification}.
+maximale) qui s'applique en repassant sur le texte formatté. Cette méthode est
+décrite dans la section \ref{sec:justification}.
 
 \section{Diviser pour régner}
 
@@ -118,6 +118,7 @@ en $O(n)$. % TODO continuer
 \section{Gloutons}
 
 \subsection{Glouton simple}
+\label{sec:simple-greedy}
 
 Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire), est le plus
 intuitif et le plus simple à implémenter. Il ajoute tous les mots à la suite
@@ -125,20 +126,23 @@ tant qu'il a assez de place sur une ligne, puis passe à la suivante.
 
 Utilisez \verb|simple-greedy| pour tester l’algorithme.
 
-% \subsection{Glouton naïf avec justification}
-% 
-% Cet algorithme est identique à « Glouton naïf » sauf qu'il exécute une seconde
-% passe sur chaque ligne pour ajouter des espaces entre les mots de façon à
-% supprimer les espaces en fin de ligne. Il fonctionne donc en $O(2n)$ en temps et
-% $O(k)$ en mémoire, et, s'il diminue le nombre total d'espaces en fin de lignes,
-% il diminue la lisibilité du texte par rapport à l'algorithme sur lequel il
-% s'appuit car il ne coupe pas les mots entre deux lignes, donc certaines lignes
-% ont beaucoup d'espaces entre les mots.
-%
-%Utilisez \verb|naive-greedy-justify| pour tester l’algorithme.
+\subsection{Glouton balancé}
+\label{sec:balanced-greedy}
+
+Cet algorithme utilise « Glouton simple » (\ref{sec:simple-greedy}), balance les
+espaces entre les mots selon une interprétation de la méthode de Samet
+\cite{Samet82}. Dans son article, Hanan Samet propose plusieurs mesures pour
+balancer les espaces entre les mots pour un texte justifié. Nous avons pris la
+moyenne $m$ des largeurs de ces espaces sur l'ensemble du texte s'il était
+justifié, puis avons fixé l'espace inter-mots de l'ensemble du texte à
+$\lfloor m \rfloor$. Enfin, l'algorithme « Glouton simple » est de nouveau
+appliqué car le balancement des espaces peut avoir bougé des mots entre les
+lignes. Il est possible de tester cet algorithme avec \verb|balanced-greedy|. Il
+marche en $O(3n)$ et $O(n)$ en mémoire. Le résultat est généralement moins bon
+visuellement qu'avec \ref{sec:simple-greedy} car il y a plus d'espaces et plus
+de lignes utilisées.
 
 \section{Programmation dynamique}
-
 
 
 % TODO partie "[pour] aller plus loin" ?
@@ -154,8 +158,9 @@ mots qui forment des chemins blancs dans le texte et distraient
 l'œil\cite{Harkins12fr}} » et des trous blancs, il nous a parut intéressant de
 nous pencher sur ce problème. La justification se fait une fois tous les mots
 disposés sur les lignes en ajustant les espaces inter-mots de façon à ce que le
-texte soit aligné aussi bien à gauche qu'à droite. Nous avons implémenté deux
-méthodes :
+texte soit aligné aussi bien à gauche qu'à droite. Nous avons testé deux
+méthodes mais n'avons gardé que la première car la seconde donnait du texte avec
+trop d'espaces.
 
 \begin{enumerate}
     \item Méthode simple : Cette méthode fonctionne ligne par ligne. Elle
@@ -164,7 +169,7 @@ méthodes :
         de fin de ligne n'est pas divisible par le nombre d'inter-mots, on
         ajoute un espace de plus au nombre nécessaire d'inter-mots de façon à ce
         qu'ils soient tous répartis. Cet algorithme de justification peut être
-        utilisé sur la ligne de commande via l'option \verb|--justify simple|.
+        utilisé sur la ligne de commande via l'option \verb|--justify|.
         Il ajoute une complexité en $O(2n)$ en temps (il passe une première fois
         sur une ligne pour calculer le nombre d'espaces à sa fin, puis une
         seconde pour les répartir, et ce pour chaque ligne), et $O(k)$ en
@@ -180,8 +185,10 @@ méthodes :
         déterminer l'uniformité d'un paragraphe, ainsi que des algorithmes pour
         l'améliorer. Nous ne nous sommes intéressés qu'aux heuristiques et avont
         implémenté un algorithme en s'inspirant de celles-ci} pour découper les
-        lignes d'un texte \cite{Samet82}, et peut être utilisée sur la ligne de
-        commande via l'option \verb|--justify dynamic|.
+        lignes d'un texte \cite{Samet82}. La façon dont nous l'avions implémenté
+        donnait des lignes avec beaucoup trop d'espaces entre les mots dans
+        certains cas, nous l'avons donc adapté pour écrire l'algorithme
+        \ref{sec:balanced-greedy}.
 \end{enumerate}
 
 \section{Récapitulatif}
