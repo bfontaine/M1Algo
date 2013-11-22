@@ -25,14 +25,14 @@ def main():
         h.print_algo_info(name, fun, sd)
         exit(0)
 
-    if algo and algo not in als:
+    if algo not in als:
         h.unknown_algo_error(algo, als)
 
     fn, _ = als[algo]
     res = fn(read_words(), width)
 
     if flags.justify:
-        res = algos.justify(res, width, method=flags.justify)
+        res = algos.justify(res, width)
 
     for line in res:
         print(' '.join(line))
