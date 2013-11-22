@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 # -*- coding: UTF-8 -*-
 
 ALGOS = {}
@@ -50,32 +49,12 @@ def simple_line_justifying(line, width):
             enumerate(line[:-1]))
     return line
 
-def dynamic_justifying(lines, width):
+def justify(lines, width):
     """
-    Justify a text by using a method inspired from Hana Samet's paper,
-    "Heuristics for the Line Division Problem in Computer Justified Text"
-    (published in 1981).
+    Justify a set of lines
     """
-    # TODO
-    return lines
-
-def justify(lines, width, **kwargs):
-    """
-    A decorator for algorithms functions to yield justified lines. This
-    slightly increase the run time but avoid a lot of code duplication. It
-    adds O(n) to the overall complexity of the algorithm, but since we can't
-    have lower complexities it's not _that_ annoying.
-    """
-    kwargs.setdefault('method', 'simple')
-    mth = kwargs['method']
-
-    if mth == 'simple' or mth not in ['simple', 'dynamic']:
-        for line in lines:
-            yield simple_line_justifying(line, width)
-        return
-
-    # dynamic
-    return dynamic_justifying(lines, width)
+    for line in lines:
+        yield simple_line_justifying(line, width)
 
 def linelen(words):
     """
