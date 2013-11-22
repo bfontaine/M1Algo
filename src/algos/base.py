@@ -63,4 +63,6 @@ def linelen(words):
     """
     words = [w for w in words]
     wcount = len(words)
-    return sum(map(len, words)) + wcount -1
+    if wcount == 0:
+        return 0
+    return sum(map(len, words)) + wcount - 1
