@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import itertools
 from .base import algo
 
 @algo("The most basic greedy algorithm")
@@ -26,3 +27,29 @@ def simple_greedy(words, width):
             w = width-lw-1
 
     yield line
+
+@algo("Balanced variant of simple-greedy")
+def balanced_greedy(words, width):
+    """
+    This algorithm calls simple-greedy, compute the average inter-word break
+    length, set every inter-word length to this average, and re-run the simple
+    greedy algorithm on this. It thus runs in O(3n) (memory: O(n)).
+    """
+    avglen = 0 # average
+    bkcount = 0 # count of breaks
+
+    lines = [x for x in simple_greedy(words, width)]
+
+    for line in lines:
+        lbkcount = len(line) - 1
+        trailing = width - sum(map(len, line)) - lbkcount
+        bkcount += lbkcount
+        avglen += trailing
+
+    avglen //= max(bkcount, 1)
+    spaces = ' '*avglen
+
+    for i, line in enumerate(lines):
+        lines[i][:-1] = map(lambda w:w+spaces, line[:-1])
+
+    return simple_greedy(itertools.chain(*lines), width)

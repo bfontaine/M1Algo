@@ -29,7 +29,9 @@ def naive_dc(words, width):
 def opt_dc(words, width):
 	length_words = len(words)
 	line = []
-	if (length_words == 1 ):
+	if (length_words == 0):
+		return ([], (words, 0))
+	if (length_words == 1):
 		return (line,(words,len(words[0])))
 	length_words2 = len(words) // 2
 	if ((length_words2 *2) < length_words):

@@ -3,6 +3,8 @@ from .base import algo
 
 def f1(words,width):
 	length_words = len(words)
+	if (length_words == 0):
+		return ([], (words, 0))
 	if(length_words == 1):
 		return ([], (words, len(words[0])))
 	k_n = words[:(length_words -1)]
