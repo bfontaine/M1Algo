@@ -2,13 +2,12 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
-%\usepackage{cprotect}
 \usepackage{verbatim}
 \begin{document}
 
 \title{Projet d'Algorithmique}
 \author{David Galichet et Baptiste Fontaine}
-\date{28 novembre 2013}
+\date{29 novembre 2013}
 \maketitle
 \tableofcontents
 \newpage
@@ -25,6 +24,9 @@ Il est versionné avec Git et sera disponible en ligne après la soutenance.
 Le code est situé dans \verb|src|, et ne nécessite pas d'installation
 particulière. Assurez-vous cependant d'avoir au moins Python 3.1.
 
+Un \verb|Makefile| est fourni afin de compiler le présent rapport et de faire
+tourner la suite de tests.
+
 \subsection{Utilisation}
 
 Le programme s'appelle \verb|wrapper|, il suffit de le lancer avec l'option
@@ -40,14 +42,14 @@ de page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivant
 :
 
 \begin{verbatim}
-./wrapper --algo naive-greedy -w 76 < in.txt
+./wrapper --algo greedy -w 76 < in.txt
 \end{verbatim}
 
 Il est également possible d'obtenir plus d'informations sur un algorithme en
 utilisant l'option \verb|--info|.
 
 \begin{verbatim}
-./wrapper --info naive-greedy
+./wrapper --info greedy
 \end{verbatim}
 
 \section{Fonctionnement}
@@ -90,6 +92,21 @@ def one_word_per_line(words, width):
         yield [word]
 \end{verbatim}
 
+Cet algorithme pourrait ensuite être utilisé sur la ligne de commande :
+
+\begin{verbatim}
+$ ./wrapper --info one-word-per-line
+One Word Per Line: An example algorithm
+
+    This algorithm is an example,
+    don't use it! It outputs only one word
+    per line.
+
+$ echo foo bar | ./wrapper -a one-word-per-line -w 42
+foo
+bar
+\end{verbatim}
+
 \part{Algorithmes}
 
 Les algorithmes sont regroupés par familles, telles que vues en cours.
@@ -113,18 +130,23 @@ Cet algorithme est une implémentation naïve du principe de « diviser pour ré
 », en effet il ne fait que diviser récursivement le texte donné en entrée
 jusqu'à ce que chaque partie puisse tenir sur une ligne. Il ne fonctionne donc
 que sur des textes de longueur raisonnable puisque sa complexité en mémoire est
-en $O(n)$. % TODO continuer
+en $O(n)$ car tout le texte doit être lu avant de pouvoir le diviser. L'utilité
+du « diviser pour régner » est discutable ici, puisque tous les mots doivent
+être lus car il faut connaître leur longueur. La complexité n'est donc pas
+réduite par l'utilisation de ce type d'algorithme. Elle est de
+$O(n+\log_2 n) \in O(n)$ (parcours de l'ensemble du texte en entrée et division
+du tableau).
 
 \section{Gloutons}
 
-\subsection{Glouton simple}
+\subsection{Glouton}
 \label{sec:simple-greedy}
 
 Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire), est le plus
 intuitif et le plus simple à implémenter. Il ajoute tous les mots à la suite
 tant qu'il a assez de place sur une ligne, puis passe à la suivante.
 
-Utilisez \verb|simple-greedy| pour tester l’algorithme.
+Utilisez \verb|greedy| pour tester l’algorithme.
 
 \subsection{Glouton balancé}
 \label{sec:balanced-greedy}
