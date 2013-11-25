@@ -15,18 +15,14 @@ function _bench() {
     echo "$b" | grep real | cut -f2
 }
 
-# long25  -- input=long.txt width=25
-# long45  -- input=long.txt width=45
 # lorem10 -- input=lorem.txt width=10
 # lorem70 -- input=lorem.txt width=70
 
 echo "Running $n iterations"
-echo "                        long25    long45    lorem10   lorem70"
-echo "                        -------------------------------------"
+echo "                        lorem10   lorem70"
+echo "                        -----------------"
 for alg in `$prog --ls`; do
     printf "%-20s: " $alg
-    printf "%10s" $(_bench $alg 25 long)
-    printf "%10s" $(_bench $alg 45 long)
     printf "%10s" $(_bench $alg 10 lorem)
     printf "%10s" $(_bench $alg 70 lorem)
     printf "\n"
