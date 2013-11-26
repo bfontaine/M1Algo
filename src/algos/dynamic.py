@@ -57,24 +57,20 @@ def words_wrap(len_word, n, width, exp=2):
                 line[j] = i
     return line
 
-@algo("A dynamic programming use methode word wrap to knuth with function square")
-def dynamic_carre(words, width):
+def knuth(words, width, exp):
     words=[w for w in words]
     len_words = len(words)
     if (len_words == 0):
         return [[]]
     l = [len(w) for w in words]
-    lines = words_wrap(l, len_words, width, 2)
-    (para,line_words) = retsoluce(words, lines, len_words)
+    lines = words_wrap(l, len_words, width, exp)
+    para, _ = retsoluce(words, lines, len_words)
     return para
 
-@algo("A dynamic programming use methode word wrap to knuth with function cube")
-def dynamic_cube(words, width):
-    words=[w for w in words]
-    len_words = len(words)
-    if (len_words == 0):
-        return [[]]
-    l = [len(w) for w in words]
-    lines = words_wrap(l, len_words, width, 3)
-    para, line_words = retsoluce(words, lines, len_words)
-    return para
+@algo("A Knuth-like dynamic programming algorithm using the square function")
+def dynamic_2(words, width):
+    return knuth(words, width, 2)
+
+@algo("A Knuth-like dynamic programming algorithm using the cube function")
+def dynamic_3(words, width):
+    return knuth(words, width, 3)
