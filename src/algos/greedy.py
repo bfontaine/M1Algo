@@ -28,17 +28,17 @@ def greedy(words, width):
 
     yield line
 
-@algo("Balanced variant of simple-greedy")
+@algo("Balanced variant of 'greedy'")
 def balanced_greedy(words, width):
     """
-    This algorithm calls simple-greedy, compute the average inter-word break
+    This algorithm calls 'greedy', compute the average inter-word break
     length, set every inter-word length to this average, and re-run the simple
     greedy algorithm on this. It thus runs in O(3n) (memory: O(n)).
     """
     avglen = 0 # average
     bkcount = 0 # count of breaks
 
-    lines = [x for x in simple_greedy(words, width)]
+    lines = [x for x in greedy(words, width)]
 
     for line in lines:
         lbkcount = len(line) - 1
@@ -52,4 +52,4 @@ def balanced_greedy(words, width):
     for i, line in enumerate(lines):
         lines[i][:-1] = map(lambda w:w+spaces, line[:-1])
 
-    return simple_greedy(itertools.chain(*lines), width)
+    return greedy(itertools.chain(*lines), width)
