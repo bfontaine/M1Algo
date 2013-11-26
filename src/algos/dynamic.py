@@ -19,7 +19,8 @@ def retsoluce(words, lines, n):
 		line = line + [words[i-1]]
 	return (para + [line],[])
 
-def WordsWrap(len_word, n , Width, func = carre):
+def wordswrap(len_word, n , Width, func = carre):
+	# Indicate the value infinity
 	INF = 100000
 	# lc[i][j] will have cost of a line which has words from i to j
 	lc = [[0 for i in range(0,(n+1))] for j in range(0,(n+1))]
@@ -28,16 +29,18 @@ def WordsWrap(len_word, n , Width, func = carre):
 	c = [0 for i in range(0,n+1)]
 	# line is used to return solution
 	line = [0 for i in range(0,n+1)]
-	# calculate extra spaces in a single line.  The value lc[i][j]
-	# indicates extra spaces if words from word number i to j are
-	# placed in a single line
+	# calculate extra space in a single line and line cost
 	for i in range(1,n+1):
+		# calculate extra spaces in a single line.
+		# The value lc[i][j] indicates extra spaces 
+		#	if words from word number i to j are
+		#	placed in a single line
 		lc[i][i] = Width - len_word[i-1]
 		for j in range(i+1,n+1):
 			lc[i][j] = lc[i][j-1] - len_word[j-1] - 1
 		# Calculate line cost corresponding to the above calculated extra spaces.
-		# The value lc[i][j] indicates cost of putting words from word 
-		# number i to j in a single line
+		# The value lc[i][j] indicates cost of putting words 
+		#	from word number i to j in a single line
 		for j in range(i,n+1):
 			if (lc[i][j] < 0):
 				lc[i][j] = INF
@@ -64,7 +67,7 @@ def dynamic_carre(words , width):
 	words=[w for w in words]
 	len_words = len(words)
 	l = [len(w) for w in words]
-	lines = WordsWrap(l , len_words, width, carre)
+	lines = wordswrap(l , len_words, width, carre)
 	(para,line_words) = retsoluce(words, lines, len_words)
 	return para
 
@@ -73,6 +76,6 @@ def dynamic_cube(words , width):
 	words=[w for w in words]
 	len_words = len(words)
 	l = [len(w) for w in words]
-	lines = WordsWrap(l , len_words, width, cube)
+	lines = wordswrap(l , len_words, width, cube)
 	(para,line_words) = retsoluce(words, lines, len_words)
 	return para
