@@ -48,10 +48,9 @@ def wordswrap(len_word, n , Width, func = carre):
 				lc[i][j] = 0
 			else :
 				lc[i][j] = func(lc[i][j])
-	# Calculate line cost corresponding to the above calculated extra
-	# spaces. The value lc[i][j] indicates cost of putting words from
-	# word number i to j in a single line
-	c[0]=0
+	# Calculate minimum cost and find minimum cost arrangement.
+	# The value c[j] indicates optimized cost to arrange words
+	#	from word number 1 to j.
 	for j in range(1,n+1):
 		c[j]= INF
 		for i in range(1,j+1):
