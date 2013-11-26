@@ -2,17 +2,21 @@
 from .base import algo, linelen
 
 def naive_dc_helper(words, width, llen):
-    wcount = len(words)
-    if wcount <= 1:
-        return [words]
     if llen <= width:
         return [words]
 
-    middle = wcount//2
+    wcount = len(words)
+    if wcount <= 1:
+        return [words]
+
+    middle = wcount // 2
     part1 = words[:middle]
+    part2 = words[middle:]
     len1 = linelen(part1)
+    len2 = llen - len1 - 1
     return naive_dc_helper(part1, width, len1) \
-        + naive_dc_helper(words[middle:], width, llen-len1)
+         + naive_dc_helper(part2, width, len2)
+
 
 @algo("A basic divide & conquer algorithm")
 def naive_dc(words, width):
@@ -21,51 +25,43 @@ def naive_dc(words, width):
     can be included on its own line. Thus, it can only work on a finite list
     of words.
     """
-    words = [w for w in words]
+    words = list(words)
     for line in naive_dc_helper(words, width, linelen(words)):
         yield line
 
 
-def opt_dc(words, width):
-	length_words = len(words)
-	line = []
-	if (length_words == 0):
-		return ([], (words, 0))
-	if (length_words == 1):
-		return (line,(words,len(words[0])))
-	length_words2 = len(words) // 2
-	if ((length_words2 *2) < length_words):
-		words1 = words[:(length_words2+1)]
-		words2 = words[(length_words2+1):]
-	else:
-		words1 = words[:length_words2]
-		words2 = words[length_words2:]
-	(lines1,(line1, l_length1)) = opt_dc(words1,width)
-	(lines2,(line2, l_length2)) = opt_dc(words2,width)
-	# parti f(n)
-	if (lines2 == []):
-		if ((l_length1+l_length2+1) <= width):
-			line1 = line1 + line2
-			return (lines1, (line1, l_length1 + l_length2 + 1))
-		else :
-			lines1 = lines1 + [line1]
-			return (lines1 ,(line2, l_length2))
+def opt_dc_helper(words, width): # TODO explain how it works
+    length_words = len(words)
+    line = []
+    if length_words == 0:
+        return ([], (words, 0))
+    if length_words == 1:
+        return (line,(words,len(words[0])))
+    length_words2 = length_words // 2
+    words1 = words[:length_words2]
+    words2 = words[length_words2:]
+    lines1, (line1, l_length1) = opt_dc_helper(words1, width)
+    lines2, (line2, l_length2) = opt_dc_helper(words2, width)
+    # partie f(n)
+    if lines2 == []:
+        total = l_length1 + l_length2 + 1
+        if total <= width:
+            return (lines1, (line1 + line2, total))
+        lines1.append(line1)
+        return (lines1, (line2, l_length2))
 
-	else:
-		lines1 = lines1 + [line1]
-		lines1 = lines1 + lines2
-		return (lines1,(line2, l_length2))
+    lines1.append(line1)
+    lines1 = lines1 + lines2
+    return (lines1, (line2, l_length2))
 
 
-
-@algo("A optimize divide & conquer algorithm")
-def divide_conquer(words, width):
-	"""
-	This algorithm recursively splits the list into two, to have only one word.
-	returns (list_line (current_line, length_line))
-	"""
-	para = []
-	words=[w for w in words]
-	(lines, (word , l_length)) = opt_dc(words, width)
-	para = lines + [word]
-	return para
+@algo("A optimized divide & conquer algorithm")
+def opt_dc(words, width): # TODO fix the doc
+    """
+    This algorithm recursively splits the list into two, to have only one word.
+    returns (list_line (current_line, length_line))
+    """
+    words = list(words)
+    lines, (word, l_length) = opt_dc_helper(words, width)
+    lines.append(word)
+    return lines
