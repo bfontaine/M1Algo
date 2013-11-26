@@ -31,7 +31,7 @@ def linelen(words):
     Compute the length of a list of words as if they were put together on a
     line, with spaces between them.
     """
-    words = [w for w in words]
+    words = list(words)
     wcount = len(words)
     if wcount == 0:
         return 0

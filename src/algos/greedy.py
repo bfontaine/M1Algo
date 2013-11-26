@@ -47,7 +47,7 @@ def balanced_greedy(words, width):
         avglen += trailing
 
     avglen //= max(bkcount, 1)
-    spaces = ' '*avglen
+    spaces = ' ' * avglen
 
     for i, line in enumerate(lines):
         lines[i][:-1] = map(lambda w:w+spaces, line[:-1])

@@ -58,7 +58,7 @@ def words_wrap(len_word, n, width, exp=2):
     return line
 
 def knuth(words, width, exp):
-    words=[w for w in words]
+    words = list(words)
     len_words = len(words)
     if (len_words == 0):
         return [[]]
