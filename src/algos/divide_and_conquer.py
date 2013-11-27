@@ -38,6 +38,8 @@ def opt_dc_helper(words, width): # TODO explain how it works
     if length_words == 1:
         return (line, words, len(words[0]))
     length_words2 = length_words // 2
+    if length_words % 2 == 1:
+        length_words2 += 1
     words1 = words[:length_words2]
     words2 = words[length_words2:]
     lines1, line1, l_length1 = opt_dc_helper(words1, width)
