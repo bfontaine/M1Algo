@@ -12,6 +12,18 @@ def printerr(*args, **kwargs):
     kwargs['file'] = stderr
     print(*args, **kwargs)
 
+def str2algo(s):
+    """
+    Return the proper name of an algorithm from an user string
+    """
+    return re.sub('[- ]', '_', s).lower()
+
+def algo2str(a):
+    """
+    Return an user-friendly name for an algo
+    """
+    return re.sub('_', '-', a)
+
 def print_algo_info(name, fun, shortdoc):
     """
     Print info about an algorithm
@@ -51,10 +63,10 @@ def read_args(algs):
         exit(1)
 
     if args.info:
-        args.info = re.sub('-', '_', args.info.lower())
+        args.info = algo2str(args.info.lower())
 
     if args.algo:
-        args.algo = re.sub('-', '_', args.algo.lower())
+        args.algo = str2algo(args.algo)
 
     return (args.width, args.algo, args)
 
@@ -70,7 +82,7 @@ def get_algos_str(algs):
     fmt = "%-" + str(max_width) + "s -- %s"
 
     s = "Available algorithms:\n"
-    return s + "\n".join([fmt % (re.sub('_', '-', a), doc) for a, doc in ls])
+    return s + "\n".join([fmt % (algo2str(a), doc) for a, doc in ls])
 
 def print_algos(algs, file=stdout):
     """
