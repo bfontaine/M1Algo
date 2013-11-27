@@ -8,14 +8,11 @@ def retsoluce(words, lines, n): # TODO rename
         line = []
         for i in range(lines[n], n+1):
             line.append(words[i-1])
-        return ([line], [])
+        return [line]
 
-    para, line = retsoluce(words, lines, lines[n]-1)
-    for i in range(lines[n], n+1):
-        line.append(words[i-1])
-
-    para.append(line)
-    return (para, [])
+    p = retsoluce(words, lines, lines[n]-1)
+    p.append([words[i-1] for i in range(lines[n], n+1)])
+    return p
 
 # TODO rename the function, 'words_wrap' is too vague
 def words_wrap(len_word, n, width, exp=2):
@@ -42,10 +39,9 @@ def words_wrap(len_word, n, width, exp=2):
         for j in range(i, n+1):
             if lc[i][j] < 0:
                 lc[i][j] = INF
-            elif j == n and lc[i][j] == 0:
-                lc[i][j] = 0
             else:
                 lc[i][j] = pow(lc[i][j], exp)
+
     # Calculate minimum cost and find minimum cost arrangement.
     # The value c[j] indicates optimized cost to arrange words
     #    from word number 1 to j.
@@ -64,7 +60,7 @@ def knuth(words, width, exp):
         return [[]]
     l = [len(w) for w in words]
     lines = words_wrap(l, len_words, width, exp)
-    para, _ = retsoluce(words, lines, len_words)
+    para = retsoluce(words, lines, len_words)
     return para
 
 @algo("A Knuth-like dynamic programming algorithm using the square function")

@@ -47,10 +47,13 @@ def generate_tests(algo_name, func):
     def test_line_length_no_more_than_width(self):
         width = 7
         res = list(func(self.wlist, width))
-        self.assertTrue(len(res) > 0)
-        self.assertTrue(len(res[0]) > 0)
+        lres = len(res)
+        lres0 = len(res[0])
+        self.assertTrue(lres > 0, "expected %d to be > 0" % lres)
+        self.assertTrue(lres0 > 0, "expected %d to be > 0" % lres0)
         firstline = ' '.join(res[0])
-        self.assertTrue(len(firstline) <= width)
+        lfl = len(firstline)
+        self.assertTrue(lfl <= width, 'expected %d to be <= %d' % (lfl, width))
 
     for attr, val in locals().items():
         if isinstance(val, types.FunctionType):
