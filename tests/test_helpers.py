@@ -47,6 +47,52 @@ class TestHelpers(unittest.TestCase):
         s = self.fp.getvalue()
         self.assertEqual(s, 'Abc Def: foo\ndoc\n')
 
+    # - str2algo - #
+
+    def test_str2algo_empty(self):
+        self.assertEqual(h.str2algo(''), '')
+
+    def test_str2algo_one_word(self):
+        w = 'foobarlongword'
+        self.assertEqual(h.str2algo(w), w)
+
+    def test_str2algo_hyphens(self):
+        w1 = 'a-b-c'
+        w2 = 'a_b_c'
+        self.assertEqual(h.str2algo(w1), w2)
+
+    def test_str2algo_spaces(self):
+        w1 = 'a b c'
+        w2 = 'a_b_c'
+        self.assertEqual(h.str2algo(w1), w2)
+
+    def test_str2algo_spaces_and_hyphens(self):
+        w1 = 'a b-c d'
+        w2 = 'a_b_c_d'
+        self.assertEqual(h.str2algo(w1), w2)
+
+    # - algo2str - #
+
+    def test_algo2str_empty(self):
+        self.assertEqual(h.algo2str(''), '')
+
+    def test_algo2str_one_word(self):
+        w = 'foobarlongword'
+        self.assertEqual(h.algo2str(w), w)
+
+    def test_algo2str_only_one_underscore(self):
+        self.assertEqual(h.algo2str('_'), '-')
+
+    def test_algo2str_underscores(self):
+        w1 = 'a_b_c'
+        w2 = 'a-b-c'
+        self.assertEqual(h.algo2str(w1), w2)
+
+    def test_algo2str_two_underscores(self):
+        w1 = 'a__c'
+        w2 = 'a--c'
+        self.assertEqual(h.algo2str(w1), w2)
+
     # - get_algos_str - #
 
     def test_algos_str_empty(self):

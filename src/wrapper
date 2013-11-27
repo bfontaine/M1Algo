@@ -13,7 +13,7 @@ def main():
 
     if flags.ls:
         for alg in sorted(als.keys()):
-            print(alg)
+            print(h.algo2str(alg))
         exit(0)
 
     if flags.info:
