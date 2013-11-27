@@ -21,10 +21,7 @@ def greedy_wrap(words,count,cols,breaks):
         breaks[j] = i
         j+=1
         line = 0
-        print(i,j)
     breaks[j] = 0
-    print("fin greedy_wrap")
-    print(breaks)
     return breaks
 
 def show_wrap(words, len_w, breaks):
@@ -33,12 +30,10 @@ def show_wrap(words, len_w, breaks):
     for i in range(0,len_w):
         if breaks[i] == 0 : break
         line = []
-        print ("de ",count ," à ",breaks[i])
         for j in range (count, breaks[i]):
             line.append(words[j])
         count = breaks[i]
         lines = lines + [line]
-    print(lines)
     return lines
 
 
