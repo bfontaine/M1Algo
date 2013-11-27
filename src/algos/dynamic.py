@@ -29,13 +29,16 @@ def greedy_wrap(words,count,cols,breaks):
 
 def show_wrap(words, len_w, breaks):
     lines = []
-    i = j = 0
-    while ((i < len_w) and (breaks[i] == 0)):
+    count = 0
+    for i in range(0,len_w):
+        if breaks[i] == 0 : break
         line = []
-        while(j < breaks[i]):
+        print ("de ",count ," à ",breaks[i])
+        for j in range (count, breaks[i]):
             line.append(words[j])
-            j+=1
+        count = breaks[i]
         lines = lines + [line]
+    print(lines)
     return lines
 
 
@@ -106,6 +109,7 @@ def knuth(words, width, exp):
         return [[]]
     l = [len(w) for w in words]
     lines = words_wrap(l, len_words, width, exp)
+    print(lines)
     para = retsoluce(words, lines, len_words)
     return para
 
