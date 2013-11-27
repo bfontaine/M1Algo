@@ -8,7 +8,8 @@ class TestAllAlgos(unittest.TestCase):
     def setUp(self):
         self.word = 'foo'
         self.wlist = ['foo', 'zzzz', 'bar', 'qux', 'z']
-        def empty_gen(): yield from ()
+        def empty_gen():
+            if False: yield
         def one_gen(): yield self.word
         self.empty = empty_gen()
         self.one   = one_gen()
