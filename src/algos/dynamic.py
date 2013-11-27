@@ -3,6 +3,52 @@ from .base import algo
 
 INF = float("inf")
 
+def greedy_wrap(words,count,cols,breaks):
+    i = j = line = 0
+    while(1):
+        if i == count :
+            breaks[j] = i
+            j+=1
+            break
+        if line == 0 :
+            line = len(words[i])
+            i+=1
+            continue
+        if (line + len(words[i])) < cols:
+            line += len(words[i])+1
+            i+=1
+            continue
+        breaks[j] = i
+        j+=1
+        line = 0
+        print(i,j)
+    breaks[j] = 0
+    print("fin greedy_wrap")
+    print(breaks)
+    return breaks
+
+def show_wrap(words, len_w, breaks):
+    lines = []
+    i = j = 0
+    while ((i < len_w) and (breaks[i] == 0)):
+        line = []
+        while(j < breaks[i]):
+            line.append(words[j])
+            j+=1
+        lines = lines + [line]
+    return lines
+
+
+@algo("test other knuth algorithm")
+def o_knuth(words,width):
+    words = list(words)
+    len_words = len(words)
+    if (len_words == 0):
+        return [[]]
+    l = [0] * (len_words + 1)
+    breaks = greedy_wrap(words,len_words,width,l)
+    return show_wrap(words,len_words,breaks)
+
 def retsoluce(words, lines, n): # TODO rename
     if lines[n] == 1:
         line = []
