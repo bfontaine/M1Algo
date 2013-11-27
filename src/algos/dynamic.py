@@ -3,14 +3,14 @@ from .base import algo
 
 INF = float("inf")
 
-def retsoluce(words, lines, n): # TODO rename
+def show_lines_wrap(words, lines, n): # TODO rename
     if lines[n] == 1:
         line = []
         for i in range(lines[n], n+1):
             line.append(words[i-1])
         return [line]
 
-    p = retsoluce(words, lines, lines[n]-1)
+    p = show_lines_wrap(words, lines, lines[n]-1)
     p.append([words[i-1] for i in range(lines[n], n+1)])
     return p
 
@@ -61,7 +61,7 @@ def knuth(words, width, exp):
     l = [len(w) for w in words]
     lines = words_wrap(l, len_words, width, exp)
     print(lines)
-    para = retsoluce(words, lines, len_words)
+    para = show_lines_wrap(words, lines, len_words)
     return para
 
 @algo("A Knuth-like dynamic programming algorithm using the square function")
