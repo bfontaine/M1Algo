@@ -20,16 +20,18 @@ def knuth(words_len, count, width, exp=2):
     # cost set to either the square or the cube of the number of trailing
     # spaces. The choice of square or cube is made using the 'exp' argument
     # (e.g. 2 -> square, 3 -> cube).
+    lc_tmp = 0
     for i in range(1, count+1):
         # lc[i][j] stores the number of trailing spaces if words from i to j
         # were put in one line
-        lc[i][i] = width - words_len[i-1]
-        for j in range(i+1, count+1):
-            lc[i][j] = lc[i][j-1] - words_len[j-1] - 1
-
+        for j in range(i, count+1):
+            if j == i :
+                lc[i][i] = width - words_len[i-1]
+            else :
+                lc[i][j] = lc_tmp - words_len[j-1] - 1
+            lc_tmp = lc[i][j]
         # We then compute the cost according to the number of trailing spaces.
         # Thus, lc[i][j] is the cost of putting words i to j on a single line.
-        for j in range(i, count+1):
             if lc[i][j] < 0:
                 lc[i][j] = INF
             elif j == count:
