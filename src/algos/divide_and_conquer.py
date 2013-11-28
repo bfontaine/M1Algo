@@ -28,7 +28,7 @@ def naive_dc(words, width):
     for line in naive_dc_helper(words, width, linelen(words)):
         yield line
 
-def opt_dc_helper(words, width):
+def alternate_dc_helper(words, width):
     length_words = len(words)
     line = []
     if length_words == 0: return ([], words, 0)
@@ -37,8 +37,8 @@ def opt_dc_helper(words, width):
     middle = length_words // 2
     if length_words % 2 == 1: middle += 1
 
-    lines1, line1, len1 = opt_dc_helper(words[:middle], width)
-    lines2, line2, len2 = opt_dc_helper(words[middle:], width)
+    lines1, line1, len1 = alternate_dc_helper(words[:middle], width)
+    lines2, line2, len2 = alternate_dc_helper(words[middle:], width)
 
     if lines2 == []:
         total = len1 + len2 + 1
@@ -58,6 +58,6 @@ def alternate_dc(words, width):
     one word in each one. It then reduces the number of parts by concatenating
     them until each one reaches the maximum line width.
     """
-    lines, lastline, _ = opt_dc_helper(list(words), width)
+    lines, lastline, _ = alternate_dc_helper(list(words), width)
     lines.append(lastline)
     return lines
