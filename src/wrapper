@@ -35,7 +35,10 @@ def main():
         res = algos.justify(res, width)
 
     for line in res:
-        print(' '.join(line))
+        # We're wrapping only one paragraph, if there are empty lines,
+        # they must be at the end, so we discard them
+        if line != []:
+            print(' '.join(line))
 
 
 if __name__ == '__main__':
