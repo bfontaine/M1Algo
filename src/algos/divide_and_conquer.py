@@ -10,8 +10,7 @@ def naive_dc_helper(words, width, llen):
         return [words]
 
     middle = wcount // 2
-    part1 = words[:middle]
-    part2 = words[middle:]
+    part1, part2 = words[:middle], words[middle:]
     len1 = linelen(part1)
     len2 = llen - len1 - 1
     return naive_dc_helper(part1, width, len1) \
@@ -29,41 +28,36 @@ def naive_dc(words, width):
     for line in naive_dc_helper(words, width, linelen(words)):
         yield line
 
-
-def opt_dc_helper(words, width): # TODO explain how it works
+def opt_dc_helper(words, width):
     length_words = len(words)
     line = []
-    if length_words == 0:
-        return ([], words, 0)
-    if length_words == 1:
-        return (line, words, len(words[0]))
-    length_words2 = length_words // 2
-    if length_words % 2 == 1:
-        length_words2 += 1
-    words1 = words[:length_words2]
-    words2 = words[length_words2:]
-    lines1, line1, l_length1 = opt_dc_helper(words1, width)
-    lines2, line2, l_length2 = opt_dc_helper(words2, width)
-    # partie f(n)
+    if length_words == 0: return ([], words, 0)
+    if length_words == 1: return ([], words, len(words[0]))
+
+    middle = length_words // 2
+    if length_words % 2 == 1: middle += 1
+
+    lines1, line1, len1 = opt_dc_helper(words[:middle], width)
+    lines2, line2, len2 = opt_dc_helper(words[middle:], width)
+
     if lines2 == []:
-        total = l_length1 + l_length2 + 1
+        total = len1 + len2 + 1
         if total <= width:
             return (lines1, line1 + line2, total)
         lines1.append(line1)
-        return (lines1, line2, l_length2)
+        return (lines1, line2, len2)
 
     lines1.append(line1)
-    lines1 = lines1 + lines2
-    return (lines1, line2, l_length2)
+    return (lines1 + lines2, line2, len2)
 
 
-@algo("A optimized divide & conquer algorithm")
-def opt_dc(words, width): # TODO fix the doc
+@algo("Another divide & conquer algorithm")
+def alternate_dc(words, width):
     """
-    This algorithm recursively splits the list into two, to have only one word.
-    returns (list_line (current_line, length_line))
+    This algorithm recursively splits the list into two parts until having only
+    one word in each one. It then reduces the number of parts by concatenating
+    them until each one reaches the maximum line width.
     """
-    words = list(words)
-    lines, word, _ = opt_dc_helper(words, width)
-    lines.append(word)
+    lines, lastline, _ = opt_dc_helper(list(words), width)
+    lines.append(lastline)
     return lines
