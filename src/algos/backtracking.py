@@ -34,7 +34,6 @@ def greedy_wrap(words, count, cols, breaks):
 def balanced_wrap(words, breaks, count, width, best_score):
     lens = list(map(len, words))
     best = [0] * (count + 1)
-    bests = [best_score]
 
     def bw(breaks, best, count, width, best_score, line_no=0, start=0, score=0):
         line = 0
@@ -53,24 +52,21 @@ def balanced_wrap(words, breaks, count, width, best_score):
             current_score = score + p
             if current_score >= best_score:
                 if trailing <= 0:
-                    bests.append(best_score)
-                    return
-                    #return best_score
+                    return best_score
                 continue
 
             # if the current score is lower than the best score, we check all
             # possible arrangements on the next line
             best[line_no] = start
-            #best_score = bw(breaks, best, count, width, best_score, line_no+1, start, current_score)
-            bw(breaks, best, count, width, best_score, line_no+1, start, current_score)
-            best_score = bests.pop() if len(bests) > 1 else bests[0]
+            best_score = bw(breaks, best, count, width, best_score, line_no+1, start, current_score)
         # une fois qu'on à parcouru tout le tableau on test si le score courant est meilleur 
         # que le best_score , si oui on remplace les ligne 0 à notre line (line_no) dans breaks
         if 0 <= current_score < best_score:
             for i in range(line_no + 1):
                 breaks[i] = best[i]
-            bests.append(current_score)
-            return
+            return current_score
+
+        return best_score
 
     bw(breaks, best, count, width, best_score)
 
