@@ -38,7 +38,7 @@ def balanced_greedy(words, width):
     avglen = 0 # average
     bkcount = 0 # count of breaks
 
-    lines = [x for x in greedy(words, width)]
+    lines = list(greedy(words, width))
 
     for line in lines:
         lbkcount = len(line) - 1
