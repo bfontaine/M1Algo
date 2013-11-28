@@ -3,64 +3,63 @@ from .base import algo
 
 INF = float("inf")
 
-def show_lines_wrap(words, lines, n): # TODO rename
-    if lines[n] == 1:
+def show_lines_wrap(words, lines, count): # TODO rename
+    if lines[count] == 1:
         line = []
-        for i in range(lines[n], n+1):
+        for i in range(lines[count], count+1):
             line.append(words[i-1])
         return [line]
 
-    p = show_lines_wrap(words, lines, lines[n]-1)
-    p.append([words[i-1] for i in range(lines[n], n+1)])
+    p = show_lines_wrap(words, lines, lines[count]-1)
+    p.append([words[i-1] for i in range(lines[count], count+1)])
     return p
 
-# TODO rename the function, 'words_wrap' is too vague
-def words_wrap(len_word, n, width, exp=2):
+def knuth_helper(words_len, count, width, exp=2):
     exp = max(1, exp)
     # lc[i][j] will have cost of a line which has words from i to j
-    lc = [[0]*(n+1) for _ in range(n+1)]
-    # c[i] will have total cost of optimal arrangement of words 
+    lc = [[0]*(count+1) for _ in range(count+1)]
+    # tc[i] will have total cost of optimal arrangement of words 
     # from 1 to i
-    c = [0]*(n+1)
+    tc = [0]*(count+1)
     # line is used to return the solution
-    line = [0]*(n+1)
+    line = [0]*(count+1)
     # calculate extra space in a single line and line cost
-    for i in range(1, n+1):
+    for i in range(1, count+1):
         # calculate extra spaces in a single line.
         # The value lc[i][j] indicates extra spaces 
         #    if words from word number i to j are
         #    placed in a single line
-        lc[i][i] = width - len_word[i-1]
-        for j in range(i+1, n+1):
-            lc[i][j] = lc[i][j-1] - len_word[j-1] - 1
+        lc[i][i] = width - words_len[i-1]
+        for j in range(i+1, count+1):
+            lc[i][j] = lc[i][j-1] - words_len[j-1] - 1
         # Calculate line cost corresponding to the above calculated extra spaces.
         # The value lc[i][j] indicates cost of putting words 
         #    from word number i to j in a single line
-        for j in range(i, n+1):
+        for j in range(i, count+1):
             if lc[i][j] < 0:
                 lc[i][j] = INF
             else:
                 lc[i][j] = pow(lc[i][j], exp)
 
     # Calculate minimum cost and find minimum cost arrangement.
-    # The value c[j] indicates optimized cost to arrange words
+    # The value tc[j] indicates optimized cost to arrange words
     #    from word number 1 to j.
-    for j in range(1, n+1):
-        c[j] = INF
+    for j in range(1, count+1):
+        tc[j] = INF
         for i in range(1, j+1):
-            if c[i-1] != INF and lc[i][j] != INF and c[i-1] + lc[i][j] < c[j]:
-                c[j] = c[i-1] + lc[i][j]
+            if tc[i-1] != INF and lc[i][j] != INF and tc[i-1] + lc[i][j] < tc[j]:
+                tc[j] = tc[i-1] + lc[i][j]
                 line[j] = i
     return line
 
 def knuth(words, width, exp):
     words = list(words)
-    len_words = len(words)
-    if (len_words == 0):
+    count = len(words)
+    if (count == 0):
         return [[]]
-    l = list(map(len, words))
-    lines = words_wrap(l, len_words, width, exp)
-    para = show_lines_wrap(words, lines, len_words)
+    words_len = list(map(len, words))
+    lines = knuth_helper(words_len, count, width, exp)
+    para = show_lines_wrap(words, lines, count)
     return para
 
 @algo("A Knuth-like dynamic programming algorithm using the square function")
