@@ -1,33 +1,9 @@
 # -*- coding: UTF-8 -*-
 from .base import algo
 
+INF = float("inf")
 PENALITY_SHORT = 1
 PENALITY_LONG = 100
-
-def greedy_wrap(words,count,cols,breaks):
-    i = j = line = score = 0
-    while(1):
-        if i == count :
-            breaks[j] = i
-            j+=1
-            break
-        if line == 0 :
-            line = len(words[i])
-            i+=1
-            continue
-        if (line + len(words[i])) < cols:
-            line += len(words[i])+1
-            i+=1
-            continue
-        breaks[j] = i
-        j+=1
-        if (i < count):
-            d = cols - line
-            if ( d > 0): score += d * d * PENALITY_SHORT
-            elif ( d < 0): score += d * d * PENALITY_LONG
-        line = 0
-    breaks[j] = 0
-    return (score,breaks)
 
 def test_wrap(words, count, cols, breaks, best, best_score, line_no, start, score):
     line = 0
@@ -93,7 +69,7 @@ def show_wrap(words, len_w, breaks):
 
 
 @algo("use a balanced wrap algorithme")
-def word_wrap_b(words,width):
+def backtraking(words,width):
     words = list(words)
     len_words = len(words)
     if (len_words == 0):
