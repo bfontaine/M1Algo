@@ -58,7 +58,7 @@ def balanced_wrap(words, breaks, best, count, cols, best_score, line_no, start, 
         # si le score courant est inférieur aux meilleur score
         # on test les cas, en se placant à la ligne suivante
         best[line_no] = start
-        (test,score_t) = balanced_wrap(args_tab, line_no+1, start, current_score)
+        (test,score_t) = balanced_wrap(words, breaks, best, count, cols, best_score, line_no+1, start, current_score)
         if test :
             best_score = score_t
     # une fois qu'on à parcouru tout le tableau on test si le score courant est meilleur 
