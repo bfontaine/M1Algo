@@ -91,7 +91,7 @@ def show_wrap(words, count, breaks):
 
 
 @algo("use a balanced wrap algorithme")
-def backtraking(words,width):
+def backtracking(words,width):
     words = list(words)
     count = len(words)
     if (count == 0):
