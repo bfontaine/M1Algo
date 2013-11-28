@@ -121,3 +121,19 @@ class TestHelpers(unittest.TestCase):
         h.print_algos(self.algs1, file=sys.stdout)
         self.assertEqual(self.fp.getvalue(), self.base + 'foo -- oof\n')
 
+    # - read_args - #
+    def test_read_args(self):
+        _argv = sys.argv
+        sys.argv = ['theprogram', '--algo', 'some-algo', '-w', '17']
+        w, alg, args = h.read_args({})
+        self.assertEqual(w, 17)
+        self.assertEqual(alg, 'some_algo')
+        sys.argv = _argv
+
+    def test_read_args_info(self):
+        _argv = sys.argv
+        sys.argv = ['theprogram', '--info', 'some-algo']
+        w, alg, args = h.read_args({})
+        self.assertEqual(args.info, 'some_algo')
+        sys.argv = _argv
+

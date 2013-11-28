@@ -63,7 +63,7 @@ def read_args(algs):
         exit(1)
 
     if args.info:
-        args.info = algo2str(args.info.lower())
+        args.info = str2algo(args.info.lower())
 
     if args.algo:
         args.algo = str2algo(args.algo)
