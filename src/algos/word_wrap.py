@@ -4,31 +4,31 @@ from .base import algo
 PENALTY_SHORT = 1
 PENALTY_LONG = 100
 
-def greedy_wrap(words,count,cols,breaks):
+def greedy_wrap(words, count, cols, breaks):
     i = j = line = score = 0
-    while(1):
-        if i == count :
+    while True:
+        if i == count:
             breaks[j] = i
-            j+=1
+            j += 1
             break
         len_word = len(words[i])
         if line == 0:
             line += len_word
-            i+=1
-            continue;
-        if (line + len_word +1 ) < cols:
+            i += 1
+            continue
+        if (line + len_word + 1 ) < cols:
             line += len_word + 1
-            i+=1
-            continue;
-        breaks[j]=i
-        j+=1
-        if (i < count):
+            i += 1
+            continue
+        breaks[j] = i
+        j += 1
+        if i < count:
             d = cols - line
-            if (d > 0):  score += PENALTY_SHORT * d * d
-            else:        score += PENALTY_LONG * d * d
-        line = 0;
+            if d > 0: score += PENALTY_SHORT * d * d
+            else:     score += PENALTY_LONG * d * d
+        line = 0
     breaks[j] = 0
-    return (score,breaks)
+    return (score, breaks)
 
 def balanced_wrap(args_tab, line_no, start, score):
     words = args_tab[0]
