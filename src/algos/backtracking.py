@@ -33,9 +33,8 @@ def greedy_wrap(words, count, cols, breaks):
 
 def balanced_wrap(words, breaks, count, width, best_score):
     lens = list(map(len, words))
-    best = [0] * (count + 1)
 
-    def bw(breaks, best, count, width, best_score, line_no=0, start=0, score=0):
+    def bk(breaks, best, count, width, best_score, line_no=0, start=0, score=0):
         line = 0
         current_score = -1
         while start < count: # for each word
@@ -58,17 +57,17 @@ def balanced_wrap(words, breaks, count, width, best_score):
             # if the current score is lower than the best score, we check all
             # possible arrangements on the next line
             best[line_no] = start
-            best_score = bw(breaks, best, count, width, best_score, line_no+1, start, current_score)
+            best_score = bk(breaks, best, count, width, best_score, line_no + 1, start, current_score)
         # une fois qu'on à parcouru tout le tableau on test si le score courant est meilleur 
         # que le best_score , si oui on remplace les ligne 0 à notre line (line_no) dans breaks
         if 0 <= current_score < best_score:
-            for i in range(line_no + 1):
-                breaks[i] = best[i]
+            breaks[:line_no + 1] = best[:line_no + 1]
             return current_score
 
         return best_score
 
-    bw(breaks, best, count, width, best_score)
+    best = [0] * (count + 1)
+    bk(breaks, best, count, width, best_score)
 
 @algo("A backtracking algorithm")
 def backtracking(words, width):
