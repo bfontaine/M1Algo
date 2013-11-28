@@ -31,42 +31,48 @@ def greedy_wrap(words, count, cols, breaks):
     breaks[j] = 0
     return (score, breaks)
 
-def balanced_wrap(words, lens, breaks, best, count, width, best_score, line_no, start, score):
-    line = 0
-    current_score = -1
-    while start < count: # for each word
-        # fill the line with the word's length
-        if line > 0: line += 1
-        line += lens[start]
-        start += 1
-        trailing = width - line
-        p = 0 # penalty
-        if start < count or trailing < 0:
-            p = trailing * trailing
-            if trailing <= 0: p *= 100
+def balanced_wrap(words, breaks, count, width, best_score):
+    lens = list(map(len, words))
+    best = [0] * (count + 1)
+    bests = [best_score]
 
-        current_score = score + p
-        if current_score >= best_score:
-            if trailing <= 0:
-                return (True, best_score)
-            continue
+    def bw(breaks, best, count, width, best_score, line_no=0, start=0, score=0):
+        line = 0
+        current_score = -1
+        while start < count: # for each word
+            # fill the line with the word's length
+            if line > 0: line += 1
+            line += lens[start]
+            start += 1
+            trailing = width - line
+            p = 0 # penalty
+            if start < count or trailing < 0:
+                p = trailing * trailing
+                if trailing <= 0: p *= 100
 
-        # if the current score is lower than the best score, we check all
-        # possible arrangements on the next line
-        best[line_no] = start
-        improved, score_t = balanced_wrap(words, lens, breaks, best, count, width, best_score, line_no+1, start, current_score)
-        if improved:
-            best_score = score_t
-    # une fois qu'on à parcouru tout le tableau on test si le score courant est meilleur 
-    # que le best_score , si oui on remplace les ligne 0 à notre line (line_no) dans breaks
-    if 0 <= current_score < best_score:
-        best_score = current_score
-        for i in range(line_no+1):
-            breaks[i] = best[i]
-        return (True, best_score)
+            current_score = score + p
+            if current_score >= best_score:
+                if trailing <= 0:
+                    bests.append(best_score)
+                    return
+                    #return best_score
+                continue
 
-    # We couldn't get a best score
-    return (False, best_score)
+            # if the current score is lower than the best score, we check all
+            # possible arrangements on the next line
+            best[line_no] = start
+            #best_score = bw(breaks, best, count, width, best_score, line_no+1, start, current_score)
+            bw(breaks, best, count, width, best_score, line_no+1, start, current_score)
+            best_score = bests.pop() if len(bests) > 1 else bests[0]
+        # une fois qu'on à parcouru tout le tableau on test si le score courant est meilleur 
+        # que le best_score , si oui on remplace les ligne 0 à notre line (line_no) dans breaks
+        if 0 <= current_score < best_score:
+            for i in range(line_no + 1):
+                breaks[i] = best[i]
+            bests.append(current_score)
+            return
+
+    bw(breaks, best, count, width, best_score)
 
 @algo("A backtracking algorithm")
 def backtracking(words, width):
@@ -79,12 +85,11 @@ def backtracking(words, width):
         yield []
         return
     breaks = [0] * (count + 1)
-    best_tmp = [0] * (count + 1)
 
     # get an initial "best" score by applying 'greedy' on the words list
     best_score, breaks = greedy_wrap(words, count, width, breaks)
 
-    balanced_wrap(words, list(map(len, words)), breaks, best_tmp, count, width, best_score, 0, 0, 0)
+    balanced_wrap(words, breaks, count, width, best_score)
 
     start = 0
     for i in range(0, count):
