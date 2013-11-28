@@ -92,16 +92,6 @@ def show_wrap(words, len_w, breaks):
     return lines
 
 
-@algo("use a greedy wrap algorithme")
-def word_wrap(words,width):
-    words = list(words)
-    len_words = len(words)
-    if (len_words == 0):
-        return [[]]
-    l = [0] * (len_words + 1)
-    (score,breaks) = greedy_wrap(words,len_words,width,l)
-    return show_wrap(words,len_words,breaks)
-
 @algo("use a balanced wrap algorithme")
 def word_wrap_b(words,width):
     words = list(words)
