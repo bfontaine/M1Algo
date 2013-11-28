@@ -114,11 +114,16 @@ def chunked_input():
         yield rest+s
         rest = rest2
 
-def read_words():
+def read_words(width):
     """
     Lazily read words on standard input
     """
     re_word = re.compile(r'\S+')
     for chunk in chunked_input():
         for m in re.finditer(re_word, chunk):
+            word = m.group(0)
+            if len(word) > width:
+                printerr("Error, word '%s' is too long for width %d." \
+                            % (word, width))
+                exit(1)
             yield m.group(0)

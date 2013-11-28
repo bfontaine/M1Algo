@@ -29,7 +29,7 @@ def main():
         h.unknown_algo_error(algo, als)
 
     fn, _ = als[algo]
-    res = fn(read_words(), width)
+    res = fn(read_words(width), width)
 
     if flags.justify:
         res = algos.justify(res, width)
