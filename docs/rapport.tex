@@ -124,7 +124,7 @@ décrite dans la section \ref{sec:justification}.
 
 \section{Diviser pour régner}
 
-\subsection{Diviser pour régner naïf}
+\subsection{Algorithme naïf}
 
 Cet algorithme est une implémentation naïve du principe de « diviser pour régner
 », en effet il ne fait que diviser récursivement le texte donné en entrée
@@ -137,18 +137,32 @@ réduite par l'utilisation de ce type d'algorithme. Elle est de
 $O(n+\log_2 n) \in O(n)$ (parcours de l'ensemble du texte en entrée et division
 du tableau).
 
+Utilisez \verb|naive-dc| pour tester l'algorithme.
+
+\subsection{Algorithm alternatif}
+
+Cet algorithme fonctionne de façon similaire au précédent, mais dans certains
+cas génère un résultat différent. Il divise récursivement la liste de mot en
+entrée en deux jusqu'à n'avoir que des listes composées d'un seul mot chacune.
+Ensuite, il « remonte » jusqu'à la solution en concaténant les listes de mots
+jusqu'à ce qu'une concaténation soit la plus longue possible pour une ligne,
+i.e. concaténer cette liste avec une autre dépasserait de la ligne.
+% TODO complexité
+
+Utilisez \verb|alternative-dc| pour tester l'algorithme.
+
 \section{Gloutons}
 
-\subsection{Glouton}
+\subsection{Algorithme simple}
 \label{sec:simple-greedy}
 
 Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire), est le plus
 intuitif et le plus simple à implémenter. Il ajoute tous les mots à la suite
 tant qu'il a assez de place sur une ligne, puis passe à la suivante.
 
-Utilisez \verb|greedy| pour tester l’algorithme.
+Utilisez \verb|greedy| pour tester l'algorithme.
 
-\subsection{Glouton balancé}
+\subsection{Algorithme balancé}
 \label{sec:balanced-greedy}
 
 Cet algorithme utilise « Glouton simple » (\ref{sec:simple-greedy}), balance les
@@ -166,9 +180,19 @@ de lignes utilisées.
 
 \section{Programmation dynamique}
 
+\subsection{Algorithme de Knuth}
 
-% TODO partie "[pour] aller plus loin" ?
+Nous avons implémenté deux variantes de l'algorithme de Knuth. L'algorithme
+associe une pénalité à un texte en fonction du nombre d'espaces en fin de ligne.
+La variante \verb|dynamic-2| utilise la somme des carrés des espaces en fin de
+ligne, tandis que la variante \verb|dynamic-3| utilise la somme des cubes. Le
+but est de minimiser la pénalité associée à un texte, et ce en utilisant la
+programmation dynamique.
+% TODO détailler le fonctionnement
 
+% TODO complexité
+
+% TODO mettre la justification dans une partie "[pour] aller plus loin" ?
 \section{Justification}
 \label{sec:justification}
 
@@ -216,6 +240,7 @@ trop d'espaces.
 \section{Récapitulatif}
 
 % TODO tableau des benchmarks + récapitulatif des complexités
+% + inclure le résultat de chaque algo sur l'exemple du sujet
 
 \newpage
 \bibliographystyle{plain}
