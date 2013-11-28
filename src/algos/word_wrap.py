@@ -30,13 +30,7 @@ def greedy_wrap(words, count, cols, breaks):
     breaks[j] = 0
     return (score, breaks)
 
-def balanced_wrap(args_tab, line_no, start, score):
-    words = args_tab[0]
-    breaks = args_tab[1]
-    best = args_tab[2]
-    count = args_tab[3]
-    cols = args_tab[4]
-    best_score = args_tab[5]
+def balanced_wrap(words, breaks, best, count, cols, best_score, line_no, start, score):
     line = 0
     current_score = -1
     # on parcourt le tableau de mot un par un
@@ -77,21 +71,21 @@ def balanced_wrap(args_tab, line_no, start, score):
     # si ce n'est pas meilleur on ne prend du score courant
     return (0,best_score)
 
-def show_wrap(words, len_w, breaks):
+def show_wrap(words, count, breaks):
     lines = []
-    count = 0
-    for i in range(0,len_w):
+    start = 0
+    for i in range(0,count):
         if breaks[i] == 0 : break
         line = []
-        for j in range (count, breaks[i]):
+        for j in range (start, breaks[i]):
             line.append(words[j])
-        count = breaks[i]
+        start = breaks[i]
         lines.append(line)
     return lines
 
 
 @algo("use a balanced wrap algorithme")
-def backtraking(words,width):
+def backtracking(words,width):
     words = list(words)
     count = len(words)
     if (count == 0):
@@ -102,6 +96,5 @@ def backtraking(words,width):
     # else we'll end up with O(2^N) behavior
     best_score , breaks = greedy_wrap(words, count, width, breaks)
 
-    args_tab = [words, breaks, best_tmp, count, width, best_score]
-    (test,score_t)= balanced_wrap(args_tab,0,0,0)
+    (test,score_t)= balanced_wrap(words, breaks, best_tmp, count, width, best_score, 0, 0, 0)
     return show_wrap(words, count, breaks)
