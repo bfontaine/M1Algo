@@ -60,7 +60,6 @@ def knuth(words, width, exp):
         return [[]]
     l = list(map(len, words))
     lines = words_wrap(l, len_words, width, exp)
-    print(lines)
     para = show_lines_wrap(words, lines, len_words)
     return para
 
