@@ -5,13 +5,17 @@ PENALTY_SHORT = 1
 PENALTY_LONG = 100
 
 def greedy_wrap(words, count, cols, breaks):
-    i = j = line = score = 0
+    i = 0
+    j = 0
+    line = 0
+    score = 0
+    lens = list(map(len, words))
     while True:
         if i == count:
             breaks[j] = i
             j += 1
             break
-        len_word = len(words[i])
+        len_word = lens[i]
         if line == 0:
             line += len_word
             i += 1
@@ -34,7 +38,7 @@ def balanced_wrap(words, breaks, best, count, cols, best_score, line_no, start, 
     line = 0
     current_score = -1
     # on parcourt le tableau de mot un par un
-    while( start <  count):
+    while start < count:
         # on remplie la ligne avec la taille du mot
         if line > 0:
             line = line + len(words[start])+1
