@@ -77,15 +77,15 @@ def balanced_wrap(args_tab, line_no, start, score):
     # si ce n'est pas meilleur on ne prend du score courant
     return (0,best_score)
 
-def show_wrap(words, len_w, breaks):
+def show_wrap(words, count, breaks):
     lines = []
-    count = 0
-    for i in range(0,len_w):
+    start = 0
+    for i in range(0,count):
         if breaks[i] == 0 : break
         line = []
-        for j in range (count, breaks[i]):
+        for j in range (start, breaks[i]):
             line.append(words[j])
-        count = breaks[i]
+        start = breaks[i]
         lines.append(line)
     return lines
 
