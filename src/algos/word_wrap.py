@@ -30,13 +30,7 @@ def greedy_wrap(words,count,cols,breaks):
     breaks[j] = 0
     return (score,breaks)
 
-def balanced_wrap(args_tab, line_no, start, score):
-    words = args_tab[0]
-    breaks = args_tab[1]
-    best = args_tab[2]
-    count = args_tab[3]
-    cols = args_tab[4]
-    best_score = args_tab[5]
+def balanced_wrap(words, breaks, best, count, cols, best_score, line_no, start, score):
     line = 0
     current_score = -1
     # on parcourt le tableau de mot un par un
@@ -102,6 +96,5 @@ def backtracking(words,width):
     # else we'll end up with O(2^N) behavior
     best_score , breaks = greedy_wrap(words, count, width, breaks)
 
-    args_tab = [words, breaks, best_tmp, count, width, best_score]
-    (test,score_t)= balanced_wrap(args_tab,0,0,0)
+    (test,score_t)= balanced_wrap(words, breaks, best_tmp, count, width, best_score, 0, 0, 0)
     return show_wrap(words, count, breaks)
