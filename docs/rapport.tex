@@ -25,14 +25,14 @@ Il est versionné avec Git et sera disponible en ligne à la fin du semestre.
 Le code est situé dans \verb|src|, et ne nécessite pas d'installation
 particulière. Assurez-vous cependant d'avoir au moins Python 3.1.
 
-Un \verb|Makefile| est fourni afin de compiler le présent rapport et de faire
-tourner la suite de tests (\verb|make check|). Sous réserve d'avoir installé le
-module \verb|coverage| pour Python 3, \verb|make checkcover| permet de vérifier
-la couverture du code par ces tests, qui est d'au moins 90\%. La suite de test
-vérifie que les fonctions de gestion des algorithmes fonctionnent bien, et fait
-passer une série de tests à chaque algorithme, qui vérifie que chacun ne donne
-que des solutions valides (i.e. préserve tous les mots dans l'ordre et ne génère
-pas de lignes trop longues).
+Un \verb|Makefile| est fourni afin de compiler le présent rapport
+(\verb|make report|) et de faire tourner la suite de tests (\verb|make check|).
+Sous réserve d'avoir installé le module \verb|coverage| pour Python 3,
+\verb|make checkcover| permet de vérifier la couverture du code par ces tests,
+qui est d'au moins 90\%.  La suite de test vérifie que les fonctions de gestion
+des algorithmes fonctionnent bien, et fait passer une série de tests à chaque
+algorithme qui vérifie que chacun ne donne que des solutions valides (i.e.
+préserve tous les mots dans l'ordre et ne génère pas de lignes trop longues).
 
 \subsection{Utilisation}
 
@@ -152,7 +152,7 @@ algorithmes, car il y a beaucoup d'espaces de fin de ligne.
 
 Utilisez \verb|naive-dc| pour tester l'algorithme.
 
-\subsection{Algorithm alternatif}
+\subsection{Algorithme alternatif}
 
 Cet algorithme fonctionne de façon similaire au précédent, mais dans certains
 cas génère un résultat différent. Il divise récursivement la liste de mot en
@@ -226,8 +226,8 @@ généré.}. Par contre, c'est également l'algorithme qui a la pire complexité
 en mémoire, puisqu'elle est de $O(n^2)$ car le tableau $T_n$ est de taille $n
 \times n$.
 
-Il a une complexité en temps de $O(n^2)$. On pourrait la réduire à $O(k\times
-n)$ en prenant en compte le fait que pour une largeur $k$ donnée, on ne peut
+Il a une complexité en temps de $O(n^2)$. On pourrait la réduire à $O(kn)$
+en prenant en compte le fait que pour une largeur $k$ donnée, on ne peut
 placer au maximum que $\lceil \frac{k}{2} \rceil$ mots dessus car ils sont
 toujours séparés par un espaces, et dans le meilleur des cas ils ont tous une
 largeur égale à 1.
@@ -240,30 +240,26 @@ nombre d'espaces en fin de ligne, mais qui cherche une solution optimale en
 utilisant du backtracking. On obtient ici du texte lisible mais en beaucoup plus
 de temps qu'avec les autres algorithmes. Il a une complexité en mémoire de
 $O(3n)$ car il a besoin de tous les mots ainsi que de deux tableaux auxilliaires
-le temps du calcul.
+le temps du calcul. Dans le pire cas, il applique $n$ fois une variante de
+l'algorithme glouton, et a complexité en temps d'au moins $O(kn^2)$.
 
 Il peut être testé avec \verb|backtracking|.
-
-% TODO complexité temps
 
 \section{Justification}
 \label{sec:justification}
 
 Bien que le sujet ne la mentionne pas et que la justification de texte puisse
-poser des problèmes de lecture \cite{Van96cognitive}, notamment à cause de
-l'insertion de nombreux espaces entre les mots\footnote{Ce qui peut créer des
-« rivières » ou « lézardes », qui en typographie sont des suites verticales
-d'espaces entre les mots qui forment des chemins blancs dans le texte et
-distraient l'œil \cite{Harkins12fr}, comme les trous blancs.}, il nous a parut
-intéressant de nous pencher sur ce problème. La justification se fait une fois
-tous les mots disposés sur les lignes en ajustant les espaces inter-mots de
-façon à ce que le texte soit aligné aussi bien à gauche qu'à droite.
+poser des problèmes \cite{Van96cognitive} notamment à cause de l'insertion de
+nombreux espaces entre les mots\footnote{Ce qui peut créer des « rivières » ou
+« lézardes », qui en typographie sont des suites verticales d'espaces entre les
+mots qui forment des chemins blancs dans le texte et distraient l'œil
+\cite{Harkins12fr}, comme les trous blancs.}, il nous a parut intéressant de
+nous pencher sur ce problème. La justification se fait une fois tous les mots
+disposés sur les lignes en ajustant les espaces inter-mots de façon à ce que le
+texte soit aligné aussi bien à gauche qu'à droite.
 
 L'algorithme fonctionne ligne par ligne. Il calcule le nombre d'espaces en trop
 en fin de ligne et les répartie équitablement entre les mots de gauche à droite.
-Si le nombre d'espaces de fin de ligne n'est pas divisible par le nombre
-d'inter-mots, on ajoute un espace de plus au nombre nécessaire d'inter-mots de
-façon à ce qu'ils soient tous répartis.
 
 Cet algorithme est indépendant des autres, et peut être testé en ajoutant
 l'option \verb|--justify| sur la ligne de commande, ce qui a pour effet de
@@ -301,7 +297,7 @@ glouton alors qu'il a le triple de sa complexité en temps.
     glouton balancé & $O(3n)$ & $O(n)$ & basse & 5.28 & 5.35 \\
     dynamic-2 & $O(n^2)$ & $O(n^2)$ & très bonne & 5.30 & 12.06 \\
     dynamic-3 & $O(n^2)$ & $O(n^2)$ & très bonne & 5.77 & 12.51 \\
-    backtracking & ? & $O(3n)$ & bonne & 5.32 & 462.0 \\
+    backtracking & $O(kn^2)$ & $O(3n)$ & bonne & 5.32 & 462.0 \\
     justification & $O(2n)$ & $O(k)$ & - & - & - \\
     \hline
 \end{tabular}
@@ -325,7 +321,8 @@ qu’il se passe quelque chose de pire en ne pompant pas, en tout
 cas c'est ce que dit mon cousin Robert.
 \end{verbatim}
 
-Certains algorithmes ont un résultat identique avec ce texte et cette largeur, mais peuvent différer avec d'autres conditions.
+Certains algorithmes ont un résultat identique avec ce texte et cette largeur,
+mais peuvent différer avec d'autres conditions.
 
 \begin{figure}[!h]
 \begin{verbatim}
