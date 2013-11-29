@@ -20,7 +20,7 @@ def greedy_wrap(words, count, width, breaks):
             line += lens[i]
             i += 1
             continue
-        if (line + lens[i] + 1) < width:
+        if (line + lens[i] + 1) <= width:
             line += lens[i] + 1
             i += 1
             continue
