@@ -16,7 +16,7 @@
 \part{Implémentation}
 
 Le projet a été écrit avec Python 3 sans utilisation de bibliothèques externes.
-Il est versionné avec Git et sera disponible en ligne après la soutenance.
+Il est versionné avec Git et sera disponible en ligne à la fin du semestre.
 
 \section{Mise en route}
 \subsection{Installation}
@@ -27,7 +27,11 @@ particulière. Assurez-vous cependant d'avoir au moins Python 3.1.
 Un \verb|Makefile| est fourni afin de compiler le présent rapport et de faire
 tourner la suite de tests (\verb|make check|). Sous réserve d'avoir installé le
 module \verb|coverage| pour Python 3, \verb|make checkcover| permet de vérifier
-la couverture du code par ces tests, qui est supérieure à 90\%.
+la couverture du code par ces tests, qui est d'au moins 90\%. La suite de test
+vérifie que les fonctions de gestion des algorithmes fonctionnent bien, et fait
+passer une série de tests à chaque algorithme, qui vérifie que chacun ne donne
+que des solutions valides (i.e. préserve tous les mots dans l'ordre et ne génère
+pas de lignes trop longues).
 
 \subsection{Utilisation}
 
@@ -37,7 +41,7 @@ algorithmes disponibles. Il lit son entrée sur l'entrée standard, et écrit le
 résultat sur la sortie standard. Il est possible de choisir l'algorithme à
 utiliser en utilisant l'option \verb|--algo|, ainsi que de changer la largeur
 de la page (79 par défaut) avec \verb|-w|. Le texte en sortie peut être
-justifié avec la l'option \verb|--justify|.
+justifié avec l'option \verb|--justify|.
 
 Par exemple, pour utiliser l'algorithme \ref{sec:simple-greedy} avec une largeur
 de page de 76 pour un texte situé dans \verb|in.txt|, utilisez la ligne suivante
@@ -56,7 +60,7 @@ utilisant l'option \verb|--info|.
 
 \section{Fonctionnement}
 
-Un des avantages de Python par rapport aux autres langages proposés pour le
+Un des avantages de Python par rapport aux autres langages proposés pour ce
 projet est qu'il a des fonctions de première classe. Nous avons utilisé cette
 fonctionalité ainsi que le chargement dynamique de modules pour avoir un
 environnement permettant de très facilement ajouter ou enlever des algorithmes
@@ -91,7 +95,7 @@ def one_word_per_line(words, width):
     per line.
     """
     for word in words:
-        yield [word]
+        yield [word] # one line
 \end{verbatim}
 
 Cet algorithme pourrait ensuite être utilisé sur la ligne de commande :
@@ -114,10 +118,15 @@ bar
 Les algorithmes sont regroupés par familles, telles que vues en cours.
 La complexité théorique dans le pire des cas est donnée en fonction de la
 longueur du texte en entrée ($n$) et de la largeur maximale d'une ligne ($k$).
+Chaque algorithme a une complexité d'au moins $O(n)$ en temps car il faut dans
+tous les cas calculer la longueur de chaque mot. En pratique, nos fonctions
+génèrent des lignes à afficher, donc leur complexité en mémoire est toujours
+d'au moins $O(k)$ car elles ont toujours au moins une ligne en mémoire. Nous
+nous intéressons ici uniquement à la complexité théorique.
 
-Dans le cas particulier où un mot serait plus long que la largeur de la page, on
-ne renvoit pas d'erreur, mais on laisse le mot tel quel sur une ligne. C'est à
-l'utilisateur de prévoir ce type de cas.
+Dans le cas particulier où un mot serait plus long que la largeur de la page, le
+programme affiche une erreur, ce qui permet de ne pas se préoccuper de ce cas
+dans les implémentations d'algorithmes puisque le problème est géré en amont.
 
 Nous avons ajouté une méthode de justification du texte (i.e. insertion
 d'espaces entre les mots de façon à ce que chaque ligne prenne la place
@@ -129,15 +138,16 @@ décrite dans la section \ref{sec:justification}.
 \subsection{Algorithme naïf}
 
 Cet algorithme est une implémentation naïve du principe de « diviser pour régner
-», en effet il ne fait que diviser récursivement le texte donné en entrée
-jusqu'à ce que chaque partie puisse tenir sur une ligne. Il ne fonctionne donc
-que sur des textes de longueur raisonnable puisque sa complexité en mémoire est
-en $O(n)$ car tout le texte doit être lu avant de pouvoir le diviser. L'utilité
-du « diviser pour régner » est discutable ici, puisque tous les mots doivent
-être lus car il faut connaître leur longueur. La complexité n'est donc pas
-réduite par l'utilisation de ce type d'algorithme. Elle est de
+», en effet il ne fait que diviser par deux récursivement le texte donné en
+entrée jusqu'à ce que chaque partie puisse tenir sur une ligne. Il ne fonctionne
+donc que sur des textes de longueur raisonnable puisque sa complexité en mémoire
+est en $O(n)$ car tout le texte doit être lu avant de pouvoir le diviser.
+L'utilité du « diviser pour régner » est discutable ici, puisque tous les mots
+doivent être lus car il faut connaître leur longueur. La complexité n'est donc
+pas réduite par l'utilisation de ce type d'algorithme. Elle est de
 $O(n+\log_2 n) \in O(n)$ (parcours de l'ensemble du texte en entrée et division
-du tableau).
+du tableau). La lisibilité du texte généré est plus faible qu'avec les autres
+algorithmes, car il y a beaucoup d'espaces de fin de ligne.
 
 Utilisez \verb|naive-dc| pour tester l'algorithme.
 
@@ -147,9 +157,11 @@ Cet algorithme fonctionne de façon similaire au précédent, mais dans certains
 cas génère un résultat différent. Il divise récursivement la liste de mot en
 entrée en deux jusqu'à n'avoir que des listes composées d'un seul mot chacune.
 Ensuite, il « remonte » jusqu'à la solution en concaténant les listes de mots
-jusqu'à ce qu'une concaténation soit la plus longue possible pour une ligne,
-i.e. concaténer cette liste avec une autre dépasserait de la ligne.
-% TODO complexité
+jusqu'à ce qu'une concaténation soit la plus longue possible pour une ligne
+(i.e. concaténer cette liste avec une autre dépasserait de la ligne). Il a les
+mêmes complexités en temps et mémoire que le précédent algorithme, mais donne un
+texte plus lisible, bien que restant inférieur aux algorithmes dynamiques
+présentés en section \ref{sec:dynprog}.
 
 Utilisez \verb|alternative-dc| pour tester l'algorithme.
 
@@ -158,43 +170,77 @@ Utilisez \verb|alternative-dc| pour tester l'algorithme.
 \subsection{Algorithme simple}
 \label{sec:simple-greedy}
 
-Cet algorithme, qui marche en $O(n)$ ($O(k)$ pour la mémoire), est le plus
+Cet algorithme, qui marche en $O(n)$ ($O(1)$ pour la mémoire), est le plus
 intuitif et le plus simple à implémenter. Il ajoute tous les mots à la suite
 tant qu'il a assez de place sur une ligne, puis passe à la suivante.
 
-Utilisez \verb|greedy| pour tester l'algorithme.
+Utilisez \verb|greedy| le tester.
 
 \subsection{Algorithme balancé}
 \label{sec:balanced-greedy}
 
-Cet algorithme utilise « Glouton simple » (\ref{sec:simple-greedy}), balance les
-espaces entre les mots selon une interprétation de la méthode de Samet
-\cite{Samet82}. Dans son article, Hanan Samet propose plusieurs mesures pour
-balancer les espaces entre les mots pour un texte justifié. Nous avons pris la
-moyenne $m$ des largeurs de ces espaces sur l'ensemble du texte s'il était
-justifié, puis avons fixé l'espace inter-mots de l'ensemble du texte à
-$\lfloor m \rfloor$. Enfin, l'algorithme « Glouton simple » est de nouveau
-appliqué car le balancement des espaces peut avoir bougé des mots entre les
-lignes. Il est possible de tester cet algorithme avec \verb|balanced-greedy|. Il
-marche en $O(3n)$ et $O(n)$ en mémoire. Le résultat est généralement moins bon
-visuellement qu'avec \ref{sec:simple-greedy} car il y a plus d'espaces et plus
-de lignes utilisées.
+Cet algorithme est une variante de l'algorithme glouton simple
+(\ref{sec:simple-greedy}) qui ajoute des espaces entre les mots dans le but de
+balancer le texte pour réduire la quantité d'espaces en fin de ligne. Il est
+inspiré de la méthode de Samet \cite{Samet82} qui cherche à répartir les espaces
+dans un paragraphe justifié. Ici, l'algorithme effectue une première passe en
+utilisant \ref{sec:simple-greedy}, puis calcule la largeur moyenne des espaces
+inter-mots du texte, comme s'il était justifié. Il repasse ensuite sur le texte
+et ajoute des espaces aux mots de façon à ce que chaque espace inter-mot ai une
+largeur proche de la moyenne. Il effectue enfin une seconde passe avec
+l'algorithme glouton simple car des mots peuvent avoir été poussés vers la ligne
+suivante à cause de l'ajout d'espaces.
+
+Il est possible de tester cet algorithme avec \verb|balanced-greedy|. Il
+marche en $O(3n)$ en temps, et $O(n)$ en mémoire. Le résultat est généralement
+moins bon visuellement qu'avec \ref{sec:simple-greedy} car il y a plus d'espaces
+et plus de lignes utilisées.
 
 \section{Programmation dynamique}
+\label{sec:dynprog}
 
 \subsection{Algorithme de Knuth}
 
-Nous avons implémenté deux variantes de l'algorithme de Knuth. L'algorithme
-associe une pénalité à un texte en fonction du nombre d'espaces en fin de ligne.
-La variante \verb|dynamic-2| utilise la somme des carrés des espaces en fin de
-ligne, tandis que la variante \verb|dynamic-3| utilise la somme des cubes. Le
-but est de minimiser la pénalité associée à un texte, et ce en utilisant la
-programmation dynamique.
-% TODO détailler le fonctionnement
+Nous avons implémenté deux variantes de l'algorithme de Knuth \cite{Knuth81}.
+L'algorithme associe une pénalité à un texte en fonction du nombre d'espaces en
+fin de ligne. La variante \verb|dynamic-2| utilise la somme des carrés des
+espaces en fin de ligne, tandis que la variante \verb|dynamic-3| utilise la
+somme des cubes. Le but est de minimiser la pénalité associée à un texte, et ce
+en utilisant la programmation dynamique.
 
-% TODO complexité
+Le but est ici de remplir un tableau $T_1$ où chaque case $(i, j)$ représente le
+coût d'une ligne contenant les mots $w_i$ à $w_j$ (avec $i,j\ge 0$ et $i\le j$).
+Ce coût est nul si la ligne tient parfaitement dans la largeur de page donnée,
+infini si la ligne est trop grande, et est fonction du nombre d'espaces restants
+sinon. On construit ensuite un tableau $T_2$, où $T_2[i]$ contient le coût
+optimal de l'arrangement des mots $w_0$ à $w_i$. Le coût optimal pour le texte
+donné est ensuite situé en $T_2[n]$ (où $n$ est l'indice du dernier mot du
+texte).
 
-% TODO mettre la justification dans une partie "[pour] aller plus loin" ?
+C'est l'algorithme qui donne les meilleurs résultats visuellement\footnote{les
+deux variantes implémentées ne génèrent pas de solutions significativement
+différentes. Nous les avons gardés pour montrer qu'il est possible de changer le
+poids associé aux espaces en fin de ligne pour faire varier légèrement le texte
+généré}. Par contre, c'est également l'algorithme qui a la pire complexité
+en mémoire, puisqu'elle est de $O(n^2)$ car le tableau $T_n$ est de taille $n
+\times n$.
+
+Il a une complexité en temps de $O(n^2)$. On pourrait la réduire à $O(k\times
+n)$ en prenant en compte le fait que pour une largeur $k$ donnée, on ne peut
+placer au maximum que $\lceil \frac{k}{2} \rceil$ mots dessus car ils sont
+toujours séparés par un espaces, et dans le meilleur des cas ils ont tous une
+largeur égale à 1.
+
+\section{Backtracking}
+
+Nous avons implémenté un algorithme qui utilise une logique similaire à
+l'algorithme dynamique puisqu'il associe un coût à un paragraphe qui dépend du
+nombre d'espaces en fin de ligne, mais qui cherche une solution optimale en
+utilisant du backtracking. On obtient ici du texte lisible mais en beaucoup plus
+de temps qu'avec les autres algorithmes.
+
+% TODO complexité mémoire + temps
+
 \section{Justification}
 \label{sec:justification}
 
@@ -206,43 +252,58 @@ mots qui forment des chemins blancs dans le texte et distraient
 l'œil\cite{Harkins12fr}} » et des trous blancs, il nous a parut intéressant de
 nous pencher sur ce problème. La justification se fait une fois tous les mots
 disposés sur les lignes en ajustant les espaces inter-mots de façon à ce que le
-texte soit aligné aussi bien à gauche qu'à droite. Nous avons testé deux
-méthodes mais n'avons gardé que la première car la seconde donnait du texte avec
-trop d'espaces.
+texte soit aligné aussi bien à gauche qu'à droite.
 
-\begin{enumerate}
-    \item Méthode simple : Cette méthode fonctionne ligne par ligne. Elle
-        calcule le nombre d'espaces en trop en fin de ligne et les répartie
-        équitablement entre les mots de gauche à droite. Si le nombre d'espaces
-        de fin de ligne n'est pas divisible par le nombre d'inter-mots, on
-        ajoute un espace de plus au nombre nécessaire d'inter-mots de façon à ce
-        qu'ils soient tous répartis. Cet algorithme de justification peut être
-        utilisé sur la ligne de commande via l'option \verb|--justify|.
-        Il ajoute une complexité en $O(2n)$ en temps (il passe une première fois
-        sur une ligne pour calculer le nombre d'espaces à sa fin, puis une
-        seconde pour les répartir, et ce pour chaque ligne), et $O(k)$ en
-        mémoire puisqu'il ne garde qu'une seule ligne en mémoire à chaque fois.
-    \item Méthode dynamique : Cette méthode regarde l'ensemble du paragraphe
-        plutôt que ligne par ligne. Contrairement à la précédente qui laisse les
-        mots sur leur ligne, elle peut déplacer des mots entre les lignes. Elle
-        consiste à calculer la moyenne des largeurs des espaces entre mots de
-        tout le texte si celui-ci était justifié avec la première méthode, puis
-        de parcourir celui-ci pour ajuster les espaces afin de les rapprocher de
-        la moyenne. Cet algorithme représente notre interprétation de la méthode
-        de Hanan Samet\footnote{Hanan Samet propose plusieurs heuristiques pour
-        déterminer l'uniformité d'un paragraphe, ainsi que des algorithmes pour
-        l'améliorer. Nous ne nous sommes intéressés qu'aux heuristiques et avont
-        implémenté un algorithme en s'inspirant de celles-ci} pour découper les
-        lignes d'un texte \cite{Samet82}. La façon dont nous l'avions implémenté
-        donnait des lignes avec beaucoup trop d'espaces entre les mots dans
-        certains cas, nous l'avons donc adapté pour écrire l'algorithme
-        \ref{sec:balanced-greedy}.
-\end{enumerate}
+L'algorithme fonctionne ligne par ligne. Il calcule le nombre d'espaces en trop
+en fin de ligne et les répartie équitablement entre les mots de gauche à droite.
+Si le nombre d'espaces de fin de ligne n'est pas divisible par le nombre
+d'inter-mots, on ajoute un espace de plus au nombre nécessaire d'inter-mots de
+façon à ce qu'ils soient tous répartis.
 
-\section{Récapitulatif}
+Cet algorithme est indépendant des autres, et peut être testé en ajoutant
+l'option \verb|--justify| sur la ligne de commande, ce qui a pour effet de
+justifier le texte produit par l'algorithme demandé.
 
-% TODO tableau des benchmarks + récapitulatif des complexités
-% + inclure le résultat de chaque algo sur l'exemple du sujet
+Il ajoute une complexité en $O(2n)$ en temps (il passe une première fois sur une
+ligne pour calculer le nombre d'espaces à sa fin, puis une seconde pour les
+répartir, et ce pour chaque ligne), et $O(k)$ en mémoire puisqu'il ne garde
+qu'une seule ligne en mémoire à chaque fois.
+
+\part{Récapitulatif}
+
+Le tableau ci-dessous récapitule les complexités théoriques de chacun des
+algorithmes, et inclut le résultat de mesures effectuées sur un texte avec deux
+largeurs différentes. Le texte comporte 400 mots; le premier test utilise une
+largeur de 10 tandis que le second utilise une largeur de 70. Les tests ont été
+effectués sur un MacBook Air 2013, processeur 1,3 GHz Intel Core i5, en
+exécutant chaque algorithme 100 fois sur chaque texte. Les mesures sont données
+en secondes.
+
+\begin{figure}[!h]
+\begin{tabular}{|l|c|c|c|c|c|}
+    \hline
+    Algorithme & Temps & Mémoire & Lisibilité & Lorem10 & Lorem70 \\
+    \hline
+    % TODO tester sur plus longs textes, balancé est plus rapide que glouton ici
+    diviser naïf & $O(n)$ & $O(n)$ & très basse & 5.36 & 5.40 \\
+    diviser alternatif & $O(n)$ & $O(n)$ & basse & 5.24 & 5.41 \\
+    glouton & $O(n)$ & $O(1)$ & moyenne & 5.47 & 5.40 \\
+    glouton balancé & $O(3n)$ & $O(n)$ & basse & 5.28 & 5.35 \\
+    dynamic-2 & $O(n^2)$ & $O(n^2)$ & très bonne & 5.30 & 12.06 \\
+    dynamic-3 & $O(n^2)$ & $O(n^2)$ & très bonne & 5.77 & 12.51 \\
+    backtracking & ? & ? & bonne & 5.32 & $\infty$* \\
+    justification & $O(2n)$ & $O(k)$ & - & - & - \\
+    \hline
+\end{tabular}
+\end{figure}
+
+(*): L'algorithme prenait beaucoup trop de temps par rapport aux autres. À titre
+de comparaison, en n'exécutant que 3 fois chaque algorithme sur le second texte,
+tous sont en dessous de 0.36 secondes sauf le backtracking qui utilise plus de
+14 secondes.
+
+% TODO inclure le résultat de chaque algo sur l'exemple du sujet (dans une
+%   annexe ?)
 
 \newpage
 \bibliographystyle{plain}

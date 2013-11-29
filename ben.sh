@@ -23,7 +23,9 @@ echo "                        lorem10   lorem70"
 echo "                        -----------------"
 for alg in `$prog --ls`; do
     printf "%-20s: " $alg
-    printf "%10s" $(_bench $alg 10 lorem)
-    printf "%10s" $(_bench $alg 70 lorem)
+    printf "%10s" $(_bench $alg 10 lorem400)
+    if [ "$alg" != "backtracking" ];then
+    printf "%10s" $(_bench $alg 70 lorem400)
     printf "\n"
+fi
 done
