@@ -5,11 +5,7 @@ def naive_dc_helper(words, width, llen):
     if llen <= width:
         return [words]
 
-    wcount = len(words)
-    if wcount <= 1:
-        return [words]
-
-    middle = wcount // 2
+    middle = len(words) // 2
     part1, part2 = words[:middle], words[middle:]
     len1 = linelen(part1)
     len2 = llen - len1 - 1
@@ -28,6 +24,7 @@ def naive_dc(words, width):
     for line in naive_dc_helper(words, width, linelen(words)):
         yield line
 
+
 def alternate_dc_helper(words, width):
     length_words = len(words)
     line = []
@@ -44,6 +41,8 @@ def alternate_dc_helper(words, width):
         total = len1 + len2 + 1
         if total <= width:
             return (lines1, line1 + line2, total)
+
+        # not sure that the two lines below are necessary
         lines1.append(line1)
         return (lines1, line2, len2)
 
@@ -52,7 +51,7 @@ def alternate_dc_helper(words, width):
 
 
 @algo("Another divide & conquer algorithm")
-def alternate_dc(words, width):
+def alternative_dc(words, width):
     """
     This algorithm recursively splits the list into two parts until having only
     one word in each one. It then reduces the number of parts by concatenating
