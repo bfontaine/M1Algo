@@ -9,4 +9,5 @@
 *.log
 *.toc
 __pycache__
+tmp
 .coverage

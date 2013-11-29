@@ -3,13 +3,14 @@
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
 \usepackage{verbatim}
-\usepackage{subfig}
+\usepackage{graphicx}
 \begin{document}
 
 \title{Projet d'Algorithmique}
 \author{David Galichet et Baptiste Fontaine}
 \date{29 novembre 2013}
 \maketitle
+\newpage
 \tableofcontents
 \newpage
 
@@ -240,8 +241,9 @@ nombre d'espaces en fin de ligne, mais qui cherche une solution optimale en
 utilisant du backtracking. On obtient ici du texte lisible mais en beaucoup plus
 de temps qu'avec les autres algorithmes. Il a une complexité en mémoire de
 $O(3n)$ car il a besoin de tous les mots ainsi que de deux tableaux auxilliaires
-le temps du calcul. Dans le pire cas, il applique $n$ fois une variante de
-l'algorithme glouton, et a complexité en temps d'au moins $O(kn^2)$.
+le temps du calcul. Il a une complexité en temps de $O(\frac{n^3}{k})$, ce qui
+fait qu'il est particulièrement inefficace sur des textes avec une faible
+largeur.
 
 Il peut être testé avec \verb|backtracking|.
 
@@ -270,15 +272,17 @@ ligne pour calculer le nombre d'espaces à sa fin, puis une seconde pour les
 répartir, et ce pour chaque ligne), et $O(k)$ en mémoire puisqu'il ne garde
 qu'une seule ligne en mémoire à chaque fois.
 
-\part{Récapitulatif}
+\part{Tests}
+
+\section{Temps d'exécution}
 
 Le tableau ci-dessous récapitule les complexités théoriques de chacun des
 algorithmes, et inclut le résultat de mesures effectuées sur un texte avec deux
 largeurs différentes. Le texte comporte 400 mots; le premier test utilise une
-largeur de 10 tandis que le second utilise une largeur de 70. Les tests ont été
+largeur de 15 tandis que le second utilise une largeur de 70. Les tests ont été
 effectués sur un MacBook Air 2013, processeur 1,3 GHz Intel Core i5, en
-exécutant chaque algorithme 100 fois sur chaque texte. Les mesures sont données
-en secondes.
+exécutant chaque algorithme 100 fois pour chaque largeur, sur un texte de 400
+mots. Les temps sont donnés en secondes.
 
 On notera que certains résultats peuvent être faussés à cause du compilateur JIT
 de Python qui optimise certaines parties du code. Ainsi, dans le tableau
@@ -288,16 +292,15 @@ glouton alors qu'il a le triple de sa complexité en temps.
 \begin{figure}[!h]
 \begin{tabular}{|l|c|c|c|c|c|}
     \hline
-    Algorithme & Temps & Mémoire & Lisibilité & Lorem10 & Lorem70 \\
+    Algorithme & Temps & Mémoire & Lisibilité & Lorem15 & Lorem70 \\
     \hline
-    % TODO backtracking
     diviser naïf & $O(n)$ & $O(n)$ & très basse & 5.36 & 5.40 \\
     diviser alternatif & $O(n)$ & $O(n)$ & basse & 5.24 & 5.41 \\
     glouton & $O(n)$ & $O(1)$ & moyenne & 5.47 & 5.40 \\
     glouton balancé & $O(3n)$ & $O(n)$ & basse & 5.28 & 5.35 \\
     dynamic-2 & $O(n^2)$ & $O(n^2)$ & très bonne & 5.30 & 12.06 \\
     dynamic-3 & $O(n^2)$ & $O(n^2)$ & très bonne & 5.77 & 12.51 \\
-    backtracking & $O(kn^2)$ & $O(3n)$ & bonne & 5.32 & 462.0 \\
+backtracking & $O(\frac{n^3}{k})$ & $O(3n)$ & bonne & $\infty$ & 84.35 \\
     justification & $O(2n)$ & $O(k)$ & - & - & - \\
     \hline
 \end{tabular}
@@ -310,7 +313,30 @@ courts textes, on pourra utiliser l'approche dynamique, mais sur de plus longs
 textes l'algorithme glouton permettra d'avoir une relativement bonne lisibilité
 en gardant une complexité linéaire en temps et constante en mémoire.
 
-\section{Résultats}
+Nous avons dû interrompre le test de l'algorithme de backtracking sur un texte
+de largeur 15 car il prenait bien trop de temps.
+
+\section{Largeur de ligne}
+
+Nous avons testé chaque algorithme sur un texte donné avec une largeur de ligne
+entre 10 et 100, pour voir comment évoluaient les temps d'exécution. Sans
+surprise, il n'y a que l'algorithme de backtracking qui voit son temps
+d'exécution changer.
+
+Le graphique ci-dessous montre le résultat d'un test avec cet algorithme.  Notre
+script l'a exécuté sur un texte de 400 mots et une largeur décroissante jusqu'à
+ce que l'exécution dure trop longtemps. Les valeurs en ordonnées sont des
+nombres de secondes. On voit clairement la croissance exponentielle du temps
+d'exécution quand la largeur approche les 15 caractères\footnote{La valeur
+exacte importe peu, seul le comportement général nous intéresse ici}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics{bt.png}
+    \caption{Backtracking en fonction de la largeur de ligne}
+\end{figure}
+
+\part{Résultats}
 
 On trouvera ici un exemple de résultat pour chaque algorithme sur le même texte
 en entrée et une largeur de 40. Voici le texte non formatté :
