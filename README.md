@@ -20,6 +20,10 @@ The program reads one line on stdin and writes on stdout.
 - `-w <width>`: specifies the width of the page (default: 79)
 - `--info <algo>`: this option can be used to print some info about a specific
   algorithm
+- `--justify`: justify the text
+- `--ls`: list the available algorithms
+
+Use `--help` to get a summary of the available options.
 
 ## Add an algorithm
 
@@ -34,8 +38,8 @@ from .base import algo
 
 Then, any algorithm must be a function with two parameters, the words list and
 the width, and yields lines to print. This function must also be decorated with
-`@algo()`, which takes an optional short doc which will show up when one used
-`--list` on the command line. The name of the function must be unique accross
+`@algo()`, which takes an optional short doc which will show up when one uses
+`--info` on the command line. The name of the function must be unique accross
 all `src/algos/*` files. You can define helper functions in the same file, as
 long as you don’t use `@algo()` on them.
 
@@ -50,7 +54,11 @@ def empty(words, width):
     yield "no text here"
 ```
 
+Please note that `words` may be a generator instead of a list.
+
 ## Tests
 
-Run `make check`. This tests the wrapper and helpers functions, but not the
-algorithms.
+Run `make check`. If you have [coverage.py][cov] for Python3, you can check the
+code coverage using `make covercheck`.
+
+[cov]: http://nedbatchelder.com/code/coverage/
