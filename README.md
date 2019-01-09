@@ -39,7 +39,7 @@ from .base import algo
 Then, any algorithm must be a function with two parameters, the words list and
 the width, and yields lines to print. This function must also be decorated with
 `@algo()`, which takes an optional short doc which will show up when one uses
-`--info` on the command line. The name of the function must be unique accross
+`--info` on the command line. The name of the function must be unique across
 all `src/algos/*` files. You can define helper functions in the same file, as
 long as you don’t use `@algo()` on them.
 
